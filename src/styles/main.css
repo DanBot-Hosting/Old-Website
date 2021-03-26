@@ -8,6 +8,10 @@
 }
 
 *::selection {
-    background: #8d8bdb;
+    background: #7289DA;
     color: #fff
+}
+
+body {
+    background-color: #23272A;
 }

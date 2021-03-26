@@ -5,6 +5,7 @@ import Helmet from "react-helmet";
 
 class Stats extends Component {
     state = {
+        stats: null
     };
 
     async componentDidMount() {
@@ -20,8 +21,7 @@ class Stats extends Component {
                     <title> DanBot Hosting | Stats </title>{" "}
                 </Helmet>
                 <Navbar />
-
-
+                
 
                 <Footer />
             </div>
