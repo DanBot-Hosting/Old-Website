@@ -17,8 +17,7 @@ class Stats extends Component {
         return (
             <div>
                 <Helmet>
-                    {" "}
-                    <title> DanBot Hosting | Stats </title>{" "}
+                    <title> DanBot Hosting | Stats </title>
                 </Helmet>
                 <Navbar />
                 

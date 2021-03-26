@@ -15,8 +15,7 @@ class Home extends Component {
         return (
             <div>
                 <Helmet>
-                    {" "}
-                    <title> DanBot Hosting | 404 </title>{" "}
+                    <title> DanBot Hosting | 404 </title>
                 </Helmet>
 
                 <figure>

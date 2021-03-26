@@ -37,8 +37,7 @@ class Home extends Component {
         return (
             <div>
                 <Helmet>
-                    {" "}
-                    <title> DanBot Hosting | Home </title>{" "}
+                    <title> DanBot Hosting | Home </title>
                 </Helmet>
                 <Navbar />
 
