@@ -39,7 +39,7 @@ class Home extends Component {
                 <Helmet>
                     <title> DanBot Hosting | Home </title>
                 </Helmet>
-                <Navbar />
+                <Navbar/>
 
                 <HomePage>
 
@@ -50,7 +50,7 @@ class Home extends Component {
 
                 </HomePage>
 
-                <Footer />
+                <Footer/>
             </div>
         );
     }

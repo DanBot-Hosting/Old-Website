@@ -1,8 +1,9 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, {useState} from "react";
+import {Link} from "react-router-dom";
 import "../styles/nav.css";
 import Button from "./nav-button";
 import Button_Mobile from "./nav-button-mobile";
+
 const bodyScrollLock = require("body-scroll-lock");
 const disableBodyScroll = bodyScrollLock.disableBodyScroll;
 const enableBodyScroll = bodyScrollLock.enableBodyScroll;
@@ -29,7 +30,7 @@ function Navbar() {
                     <i class="fas fa-server"></i>
                 </Link>
                 <div className="menu-icon" onClick={handleClick}>
-                    <i className={click ? "fas fa-times" : "fas fa-bars"} />
+                    <i className={click ? "fas fa-times" : "fas fa-bars"}/>
                 </div>
                 <ul id="mobile" className={click ? "nav-menu active" : "nav-menu"}>
                     <li className="nav-item">
@@ -48,10 +49,10 @@ function Navbar() {
                         </Link>
                     </li>
                     <li>
-                        <Button_Mobile componet={closeMobileMenu} />
+                        <Button_Mobile componet={closeMobileMenu}/>
                     </li>
                 </ul>
-                <Button />
+                <Button/>
             </nav>
         </>
     );

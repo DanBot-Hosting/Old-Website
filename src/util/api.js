@@ -2,9 +2,9 @@ const baseURL = window.origin;
 const api = "https://danbot.host/api";
 const ID = "640161047671603205";
 
-const getOauth = function(state) {
+const getOauth = function (state) {
     let re = "/account"
-    if(state) {
+    if (state) {
         re = state
     }
     const url = new URL("https://discordapp.com/oauth2/authorize");

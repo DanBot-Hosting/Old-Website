@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
+import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import * as api from "./util/api";
 
 // pages
@@ -13,8 +13,8 @@ function App() {
         <React.Fragment>
             <Router>
                 <Switch>
-                    <Route exact path="/" component={Home} />
-                    <Route exact path="/stats" component={Stats} />
+                    <Route exact path="/" component={Home}/>
+                    <Route exact path="/stats" component={Stats}/>
 
                     <Route path='/login' component={() => {
                         window.location.href = api.getOauth();
@@ -26,7 +26,7 @@ function App() {
                         return RedirectPage;
                     }}/>
 
-                    <Route component={NoMatch} />
+                    <Route component={NoMatch}/>
                 </Switch>
             </Router>
         </React.Fragment>

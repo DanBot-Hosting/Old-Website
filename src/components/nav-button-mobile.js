@@ -1,6 +1,6 @@
 import React from "react";
 import "../styles/button.css";
-import { NavLink as Link } from "react-router-dom";
+import {NavLink as Link} from "react-router-dom";
 import styled from "styled-components";
 import * as api from "../util/api";
 
@@ -49,7 +49,7 @@ export default class Button extends React.Component {
 
     async componentDidMount() {
         if (localStorage.getItem("user")) {
-            this.setState({ loggedIn: true });
+            this.setState({loggedIn: true});
         }
     }
 
@@ -62,7 +62,7 @@ export default class Button extends React.Component {
     }
 
     render() {
-        const { loggedIn } = this.state;
+        const {loggedIn} = this.state;
         const targetElement = document.querySelector("#mobile");
 
         if (loggedIn) {

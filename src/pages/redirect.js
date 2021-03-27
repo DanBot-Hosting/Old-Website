@@ -1,12 +1,10 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import Navbar from "../components/nav";
 import Footer from "../components/footer";
 import Helmet from "react-helmet";
-import Image from "../images/loading.svg";
 
 class Stats extends Component {
-    state = {
-    };
+    state = {};
 
     async componentDidMount() {
 
@@ -19,11 +17,11 @@ class Stats extends Component {
                 <Helmet>
                     <title> DanBot Hosting | Redirecting </title>
                 </Helmet>
-                <Navbar />
+                <Navbar/>
 
-                    Please wait while we redirect
+                Please wait while we redirect
 
-                <Footer />
+                <Footer/>
             </div>
         );
     }
