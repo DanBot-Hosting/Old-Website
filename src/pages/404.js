@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "../styles/404.css";
 import Helmet from "react-helmet";
+import Navbar from "../components/nav";
 
 class Home extends Component {
     state = {
@@ -17,6 +18,8 @@ class Home extends Component {
                 <Helmet>
                     <title> DanBot Hosting | 404 </title>
                 </Helmet>
+
+                <Navbar />
 
                 <figure>
                     <div className="sad-mac"></div>

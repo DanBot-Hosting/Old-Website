@@ -18,7 +18,7 @@ const HomePage = styled.div`
 const HomeLogo = styled.img`
   height: 100px;
   margin-bottom: 1rem;
-  border-radius: 50%;
+  border-radius: 65%;
 `
 
 const Title = styled.h1`
