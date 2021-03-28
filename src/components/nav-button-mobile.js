@@ -38,8 +38,6 @@ export const NavBtnLink = styled(Link)`
 `;
 
 const bodyScrollLock = require("body-scroll-lock");
-const disableBodyScroll = bodyScrollLock.disableBodyScroll;
-const enableBodyScroll = bodyScrollLock.enableBodyScroll;
 const clearAllBodyScrollLocks = bodyScrollLock.clearAllBodyScrollLocks;
 
 export default class Button extends React.Component {
@@ -54,16 +52,11 @@ export default class Button extends React.Component {
     }
 
     componentWillUnmount() {
-        // 5. Useful if we have called disableBodyScroll for multiple target elements,
-        // and we just want a kill-switch to undo all that.
-        // OR useful for if the `hideTargetElement()` function got circumvented eg. visitor
-        // clicks a link which takes him/her to a different page within the app.
         clearAllBodyScrollLocks();
     }
 
     render() {
         const {loggedIn} = this.state;
-        const targetElement = document.querySelector("#mobile");
 
         if (loggedIn) {
             return (

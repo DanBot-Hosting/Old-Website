@@ -20,8 +20,15 @@ const getOauth = function (state) {
     return url.href;
 };
 
+const fetchStats = async function () {
+    const res = await fetch(`${api}/stats`);
+    const result = await res.json();
+    return result;
+};
+
 export {
-    getOauth
+    getOauth,
+    fetchStats
 }
 
 export default api;

@@ -38,8 +38,6 @@ export const NavBtnLink = styled(Link)`
 `;
 
 const bodyScrollLock = require("body-scroll-lock");
-const disableBodyScroll = bodyScrollLock.disableBodyScroll;
-const enableBodyScroll = bodyScrollLock.enableBodyScroll;
 
 export default class Button extends React.Component {
     state = {
@@ -54,7 +52,6 @@ export default class Button extends React.Component {
 
     render() {
         const {loggedIn} = this.state;
-        const targetElement = document.querySelector("#mobile");
 
         if (loggedIn) {
             return (
