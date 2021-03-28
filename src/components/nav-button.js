@@ -2,7 +2,6 @@ import React from "react";
 import "../styles/button.css";
 import {NavLink as Link} from "react-router-dom";
 import styled from "styled-components";
-import * as api from "../util/api";
 
 export const NavBtn = styled.nav`
   display: flex;
@@ -30,6 +29,7 @@ export const NavBtnLink = styled(Link)`
   text-decoration: none;
   /* Second Nav */
   margin-left: 24px;
+
   &:hover {
     transition: all 0.2s ease-in-out;
     background: #5772d2;

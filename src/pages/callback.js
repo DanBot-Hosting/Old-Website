@@ -37,8 +37,8 @@ class Home extends Component {
         const code = url.get("code");
         if (!code) return window.location.href = "/";
 
-        if(code) {
-            this.setState({ msg: "Please wait while we gather your details" });
+        if (code) {
+            this.setState({msg: "Please wait while we gather your details"});
         }
 
         if (localStorage.getItem("user")) {
@@ -50,7 +50,7 @@ class Home extends Component {
         setInterval(async () => {
 
             if (localStorage.getItem("user")) {
-                this.setState({ redirect: true, msg: "Successfully logged in!" });
+                this.setState({redirect: true, msg: "Successfully logged in!"});
             } else {
                 this.fetch()
             }
@@ -62,23 +62,23 @@ class Home extends Component {
     async fetch() {
         const url = new URLSearchParams(window.location.search);
         const code = url.get("code");
-        if(!code) return window.location.href = "/"
+        if (!code) return window.location.href = "/"
 
         localStorage.setItem("code", code);
 
         try {
             let info = await api.user(code);
             console.log(info)
-            if(info.error) this.setState({ msg: "An error Occurred, Attempting to login again... " });
+            if (info.error) this.setState({msg: "An error Occurred, Attempting to login again... "});
         } catch (e) {
             console.log(e)
-            this.setState({ msg: "An error Occurred, Attempting to login again... " });
+            this.setState({msg: "An error Occurred, Attempting to login again... "});
         }
 
     }
 
     render() {
-        const { msg } = this.state;
+        const {msg} = this.state;
 
         return (
             <div>

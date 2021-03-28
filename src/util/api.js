@@ -26,11 +26,11 @@ const fetchStats = async function () {
     return result;
 };
 
-const user = async function(code) {
+const user = async function (code) {
     if (!code || code === "n/a") return;
     const user = await fetch(`${api}/callback?code=${code}&redirect=${baseURL}`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" }
+        headers: {"Content-Type": "application/json"}
     }).then(res => res.json());
 
     localStorage.setItem("user", JSON.stringify(user));
