@@ -23,11 +23,17 @@ const HomeLogo = styled.img`
 
 const Title = styled.h1`
   color: #fff;
+  @media screen and (max-width: 768px) {
+    font-size: 25px;
+  }
 `
 
 const Description = styled.h3`
   color: #fff;
   text-align: center;
+  @media screen and (max-width: 768px) {
+    font-size: 15px;
+  }
 `
 
 class Home extends Component {

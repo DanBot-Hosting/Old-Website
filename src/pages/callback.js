@@ -4,6 +4,7 @@ import Footer from "../components/footer";
 import Helmet from "react-helmet";
 import styled from "styled-components";
 import * as api from "../util/api";
+import {Link} from "react-router-dom";
 
 const HomePage = styled.div`
   display: flex;
@@ -17,10 +18,28 @@ const HomePage = styled.div`
 
 const Title = styled.h1`
   color: #fff;
+  font-size: 45px;
   text-align: center;
   @media screen and (max-width: 768px) {
     font-size: 25px;
   }
+`
+
+const Description = styled.h4`
+  color: #fff;
+  font-size: 35px;
+  text-align: center;
+  @media screen and (max-width: 768px) {
+    font-size: 20px;
+  }
+`
+
+const Loginx2 = styled(Link)`
+  outline: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  text-decoration: none;
 `
 
 class Home extends Component {
@@ -28,7 +47,8 @@ class Home extends Component {
     state = {
         msg: "Awaiting Code...",
         to: "/account",
-        redirect: false
+        redirect: false,
+        error: false
     };
 
     async componentDidMount() {
@@ -69,16 +89,16 @@ class Home extends Component {
         try {
             let info = await api.user(code);
             console.log(info)
-            if (info.error) this.setState({msg: "An error Occurred, Attempting to login again... "});
+            if (info.error) this.setState({msg: "An error Occurred", error: true});
         } catch (e) {
             console.log(e)
-            this.setState({msg: "An error Occurred, Attempting to login again... "});
+            this.setState({msg: "An error Occurred", error: true});
         }
 
     }
 
     render() {
-        const {msg} = this.state;
+        const {msg, error} = this.state;
 
         return (
             <div>
@@ -90,6 +110,16 @@ class Home extends Component {
                 <HomePage>
 
                     <Title> {msg} </Title>
+
+                    {error ? (
+                        <Description>
+                            <Loginx2 to="/login">
+                                Click Here to Re-Try
+                            </Loginx2>
+                        </Description>
+                    ) : (
+                        <></>
+                    )}
 
                 </HomePage>
 
