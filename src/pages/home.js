@@ -16,9 +16,11 @@ const HomePage = styled.div`
 `
 
 const HomeLogo = styled.img`
-  height: 100px;
   margin-bottom: 1rem;
   border-radius: 65%;
+  @media screen and (max-width: 768px) {
+    height: 100px;
+  }
 `
 
 const Title = styled.h1`

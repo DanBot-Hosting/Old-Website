@@ -1,5 +1,5 @@
 const baseURL = window.origin;
-const api = "https://danbot.host/api";
+const api = "https://api.danbot.host";
 const ID = "640161047671603205";
 
 const getOauth = function (state) {

@@ -1,5 +1,3 @@
-
-
 /* I. Containers */
 figure {
     font-size: 6px;
@@ -17,6 +15,7 @@ figcaption {
     flex-wrap: wrap;
     height: 17em;
 }
+
 /*
 @media screen and (max-width: 768px) {
     figcaption {
