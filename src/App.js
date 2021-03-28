@@ -7,6 +7,7 @@ import Home from "./pages/home";
 import NoMatch from "./pages/404";
 import Stats from "./pages/stats";
 import RedirectPage from "./pages/redirect";
+import Callback from "./pages/callback";
 
 function App() {
     return (
@@ -15,6 +16,7 @@ function App() {
                 <Switch>
                     <Route exact path="/" component={Home}/>
                     <Route exact path="/stats" component={Stats}/>
+                    <Route exact path="/callback" component={Callback}/>
 
                     <Route path='/login' component={() => {
                         window.location.href = api.getOauth();

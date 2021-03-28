@@ -63,7 +63,7 @@ export default class Button extends React.Component {
             );
         } else {
             return (
-                <a href={api.getOauth()}>
+                <a href={"/login"}>
                     <button className="btn">
                         {" "}
                         <i class="fab fa-discord"></i> Login

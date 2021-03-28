@@ -2,7 +2,6 @@ import React from "react";
 import "../styles/button.css";
 import {NavLink as Link} from "react-router-dom";
 import styled from "styled-components";
-import * as api from "../util/api";
 
 export const NavBtn = styled.nav`
   display: flex;
@@ -66,7 +65,7 @@ export default class Button extends React.Component {
             );
         } else {
             return (
-                <a href={api.getOauth()} className="nav-links-mobile">
+                <a href={"/login"} className="nav-links-mobile">
                     <i class="fab fa-discord"></i> Login
                 </a>
             );
