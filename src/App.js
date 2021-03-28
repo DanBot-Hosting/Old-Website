@@ -8,6 +8,7 @@ import NoMatch from "./pages/404";
 import Stats from "./pages/stats";
 import RedirectPage from "./pages/redirect";
 import Callback from "./pages/callback";
+import Account_Index from "./pages/account";
 
 function App() {
     return (
@@ -17,6 +18,7 @@ function App() {
                     <Route exact path="/" component={Home}/>
                     <Route exact path="/stats" component={Stats}/>
                     <Route exact path="/callback" component={Callback}/>
+                    <Route exact path="/account" component={Account_Index}/>
 
                     <Route path='/login' component={() => {
                         window.location.href = api.getOauth();

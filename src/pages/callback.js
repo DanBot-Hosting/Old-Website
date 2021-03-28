@@ -40,6 +40,11 @@ const Loginx2 = styled(Link)`
   color: #fff;
   cursor: pointer;
   text-decoration: none;
+
+  &:hover {
+    transition: all 0.2s ease-in-out;
+    color: #e0dcdc;
+  }
 `
 
 class Home extends Component {
