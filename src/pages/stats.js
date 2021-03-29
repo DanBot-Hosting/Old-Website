@@ -201,7 +201,7 @@ class Stats extends Component {
                 }
 
                 return (
-                    <div>
+                    <div key={`node-${name}`}>
                         <Link to={`/stats/node/${name}`} style={{"textDecoration": "none"}}>
                             <Info>
                                 <Name className={status}>

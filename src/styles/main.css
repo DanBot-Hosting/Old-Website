@@ -81,3 +81,13 @@ span {
         text-align: center;
     }
 }
+
+.chart-wrapper {
+    padding: 2%;
+    display: inline-block;
+}
+
+.main.chart-wrapper {
+    width: 96%;
+    height: 400px;
+}

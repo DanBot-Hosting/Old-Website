@@ -9,6 +9,7 @@ import ErrorPage from "./error";
 import NotFound from "./404";
 import {withRouter} from "react-router-dom";
 import ReactTooltip from "react-tooltip";
+import LineChart from "../components/chart";
 
 const Page = styled.div`
   display: flex;
@@ -150,7 +151,10 @@ const MinorAlert = styled.div`
   }
 `;
 
+const StatsPanel = styled.div``
+
 class Node_Status extends Component {
+    chartRef = React.createRef();
     state = {
         stats: null,
         error: false,
@@ -159,7 +163,9 @@ class Node_Status extends Component {
         nodeID: null,
         nodeStatus: "legend bg-error",
         nodeStatusText: "VM Outage",
-        toolTipText: "Connection to Node completely lost"
+        toolTipText: "Connection to Node completely lost",
+        statsOvertime: [],
+        hexColor: "#FF414B"
     };
 
     async componentDidMount() {
@@ -169,12 +175,13 @@ class Node_Status extends Component {
         this.fetchStatList = this.fetchStatList.bind(this);
 
         this.setState({nodeID: Node});
+
     }
 
     fetchStatList = async () => {
         let statRes = await api.fetchStats();
 
-        const {nodeID} = this.state;
+        const {nodeID, statsOvertime} = this.state;
         let inf = this;
         if (statRes.error) {
             this.setState({error: true, loading: false});
@@ -187,6 +194,7 @@ class Node_Status extends Component {
                     data.push(statRes.data[key])
                 }
             });
+
             this.setState({stats: data});
 
             let nodes = [];
@@ -212,6 +220,7 @@ class Node_Status extends Component {
                     let status = "legend bg-error"; // Default
                     let text = "VM Outage";
                     let toolTip = "Connection to Node completely lost";
+                    let color = "#FF414B"
 
                     let vm = entry.vm;
                     let online = entry.online;
@@ -220,6 +229,7 @@ class Node_Status extends Component {
                         status = "legend bg-success"
                         text = "Operational"
                         toolTip = "Online and responsive"
+                        color = "#01E6CE"
                     }
 
                     if (!vm && online) {
@@ -233,10 +243,19 @@ class Node_Status extends Component {
                             status = "legend bg-warning";
                             text = "Wings Outage"
                             toolTip = "Online but not connected"
+                            color = "#FF9B00"
                         }
                     }
 
-                    inf.setState({nodeStatus: status, nodeStatusText: text, toolTipText: toolTip});
+                    statsOvertime.push(entry);
+
+                    inf.setState({
+                        nodeStatus: status,
+                        nodeStatusText: text,
+                        toolTipText: toolTip,
+                        statsOvertime,
+                        hexColor: color
+                    });
 
                 }
 
@@ -248,7 +267,20 @@ class Node_Status extends Component {
     }
 
     render() {
-        const {stats, error, loading, found, nodeID, nodeStatus, nodeStatusText, toolTipText} = this.state;
+        const {
+            stats,
+            error,
+            loading,
+            found,
+            nodeID,
+            nodeStatus,
+            nodeStatusText,
+            toolTipText,
+            statsOvertime,
+            hexColor
+        } = this.state;
+
+        console.log(statsOvertime)
 
         if (loading) {
             return (
@@ -327,6 +359,19 @@ class Node_Status extends Component {
                     ) : (
                         <></>
                     )}
+
+
+                    {/*
+
+                     removed for now unless someone wants to help me
+
+                     <div className="main chart-wrapper">
+                        <LineChart
+                            data={statsOvertime}
+                            title={"Mem"}
+                            color={hexColor}
+                        />
+                    </div> */}
 
 
                     <Footer/>
