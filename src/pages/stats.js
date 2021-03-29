@@ -22,7 +22,7 @@ const Page2 = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  
+
   width: 90%;
   position: fixed;
 `
@@ -56,7 +56,7 @@ const Container = styled.div`
     width: 100%;
     padding: 0;
   }
-  
+
 `
 
 const Info = styled.div`
