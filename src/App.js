@@ -9,6 +9,7 @@ import Stats from "./pages/stats";
 import RedirectPage from "./pages/redirect";
 import Callback from "./pages/callback";
 import Account_Index from "./pages/account";
+import Node_Status from "./pages/individual-node-status";
 
 function App() {
     return (
@@ -17,6 +18,8 @@ function App() {
                 <Switch>
                     <Route exact path="/" component={Home}/>
                     <Route exact path="/stats" component={Stats}/>
+                    <Route exact path="/stats/node/:ID" component={Node_Status}/>
+
                     <Route exact path="/callback" component={Callback}/>
                     <Route exact path="/account" component={Account_Index}/>
 

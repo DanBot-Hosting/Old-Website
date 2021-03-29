@@ -6,8 +6,9 @@ import * as api from "../util/api";
 import styled from "styled-components";
 import LoadingIMG from "../images/loading.svg";
 import ErrorPage from "./error";
+import NotFound from "./404";
 import ReactTooltip from "react-tooltip";
-import {Link} from "react-router-dom";
+import {Link, withRouter} from "react-router-dom";
 
 const Page = styled.div`
   display: flex;
@@ -121,20 +122,29 @@ const Intro = styled.div`
   }
 `
 
-class Stats extends Component {
+class Node_Status extends Component {
     state = {
         stats: null,
         error: false,
-        loading: true
+        loading: true,
+        found: false,
+        nodeID: null
     };
 
     async componentDidMount() {
-        this.fetchStatList()
+        this.fetchStatList();
+        let Node = this.props.match.params.ID;
+        if (!Node) return (window.location.href = "/stats?error=NO_ID");
+        this.fetchStatList = this.fetchStatList.bind(this);
+
+        this.setState({ nodeID: Node });
     }
 
     fetchStatList = async () => {
         let statRes = await api.fetchStats();
 
+        const {nodeID} = this.state;
+        let inf = this;
         if (statRes.error) {
             this.setState({error: true, loading: false});
         } else {
@@ -142,20 +152,46 @@ class Stats extends Component {
             Object.keys(statRes.data).map(function (key, index) {
                 data.push(statRes.data[key])
             });
-            this.setState({stats: data, loading: false});
+            this.setState({stats: data});
+
+            let nodes = [];
+
+            data.map(function (entry) {
+                console.log(entry);
+                let node = entry.servername.split("Node")[1];
+                nodes.push(node)
+
+                if(!nodes.includes(nodeID)) {
+                    inf.setState({ found: false, loading: false });
+                }
+
+                if(node === nodeID) {
+                    inf.setState({ found: true, loading: false });
+                    let status = "legend bg-error"; // Default
+
+                    if (entry.nodeStatus === "Online") {
+                        status = "legend bg-success"
+                    } else if (entry.nodeStatus === "Wings Outage") {
+                        status = "legend bg-warning";
+                    }
+
+                }
+
+            })
+
         }
 
         setTimeout(this.fetchStatList, 25 * 1000);
     }
 
     render() {
-        const {stats, error, loading} = this.state;
+        const {stats, error, loading, found, nodeID} = this.state;
 
         if (loading) {
             return (
                 <div>
                     <Helmet>
-                        <title> DanBot Hosting | Stats </title>
+                        <title> DanBot Hosting | Node Status </title>
                     </Helmet>
                     <Navbar/>
 
@@ -168,35 +204,12 @@ class Stats extends Component {
             );
         } else if (error) {
             return <ErrorPage/>;
-        } else {
-
-            let statMap = stats.map(function (entry) {
-                console.log(entry);
-                let status = "legend bg-error"; // Default
-
-                if(entry.nodeStatus === "Online") {
-                    status = "legend bg-success"
-                } else if (entry.nodeStatus === "Wings Outage") {
-                    status = "legend bg-warning";
-                }
-
-                return (
-                    <div>
-                        <Link to={`/stats/node/${entry.servername.split("Node")[1]}`} style={{"textDecoration": "none"}}>
-                            <Info>
-                                <Name className={status}>
-                                    Node {entry.servername.split("Node")[1]}
-                                </Name>
-                            </Info>
-                        </Link>
-                    </div>
-                )
-            })
+        } else if(found) {
 
             return (
                 <div>
                     <Helmet>
-                        <title> DanBot Hosting | Stats </title>
+                        <title> DanBot Hosting | Node {nodeID} </title>
                     </Helmet>
                     <Navbar/>
 
@@ -206,8 +219,8 @@ class Stats extends Component {
                                 <div className="columns is-multiline status-header">
                                     <div className="column is-half is-full-touch">
                                         <center>
-                                            {" "}
-                                            <Title>DanBot Status</Title>
+
+                                            <Title>Node {nodeID} Status</Title>
 
                                         </center>
                                     </div>
@@ -235,19 +248,15 @@ class Stats extends Component {
                     </Intro>
 
 
-                    <Container>
-
-                        {statMap}
-
-
-                    </Container>
 
                     <Footer/>
                 </div>
             );
+        } else {
+            return <NotFound/>;
         }
 
     }
 }
 
-export default Stats;
+export default withRouter(Node_Status);
