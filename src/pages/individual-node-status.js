@@ -8,6 +8,7 @@ import LoadingIMG from "../images/loading.svg";
 import ErrorPage from "./error";
 import NotFound from "./404";
 import {withRouter} from "react-router-dom";
+import ReactTooltip from "react-tooltip";
 
 const Page = styled.div`
   display: flex;
@@ -127,7 +128,8 @@ class Node_Status extends Component {
         found: false,
         nodeID: null,
         nodeStatus: "legend bg-error",
-        nodeStatusText: "VM Outage"
+        nodeStatusText: "VM Outage",
+        toolTipText: "Connection to Node completely lost"
     };
 
     async componentDidMount() {
@@ -168,16 +170,19 @@ class Node_Status extends Component {
                     inf.setState({found: true, loading: false});
                     let status = "legend bg-error"; // Default
                     let text = "VM Outage";
+                    let toolTip = "Connection to Node completely lost";
 
                     if (entry.nodeStatus === "Online") {
                         status = "legend bg-success"
                         text = "Operational"
+                        toolTip = "Online and responsive"
                     } else if (entry.nodeStatus === "Wings Outage") {
                         status = "legend bg-warning";
                         text = "Wings Outage"
+                        toolTip = "Online but not connected"
                     }
 
-                    inf.setState({ nodeStatus: status, nodeStatusText: text });
+                    inf.setState({ nodeStatus: status, nodeStatusText: text, toolTipText: toolTip });
 
                 }
 
@@ -189,7 +194,7 @@ class Node_Status extends Component {
     }
 
     render() {
-        const {stats, error, loading, found, nodeID, nodeStatus, nodeStatusText} = this.state;
+        const {stats, error, loading, found, nodeID, nodeStatus, nodeStatusText, toolTipText} = this.state;
 
         if (loading) {
             return (
@@ -231,11 +236,16 @@ class Node_Status extends Component {
 
 
                                     <Page2>
-                                        <div className="legend-wrapper">
+                                        <div className="legend-wrapper"
+                                             data-tip={toolTipText}
+                                             onMouseEnter={() => {
+                                            ReactTooltip.rebuild();
+                                        }}>
                                             <div className={nodeStatus}>
                                                 <span className="legend-marker"></span>{nodeStatusText}
                                             </div>
                                         </div>
+                                        <ReactTooltip effect="solid"/>
                                     </Page2>
 
                                 </div>

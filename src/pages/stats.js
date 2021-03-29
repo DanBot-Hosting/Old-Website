@@ -213,7 +213,7 @@ class Stats extends Component {
 
                                     <Page2>
                                         <div className="legend-wrapper">
-                                            <div className="legend bg-success" data-tip="Online and working"
+                                            <div className="legend bg-success" data-tip="Online and responsiveg"
                                                  onMouseEnter={() => {
                                                      ReactTooltip.rebuild();
                                                  }}>
