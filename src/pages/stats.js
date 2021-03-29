@@ -148,7 +148,7 @@ class Stats extends Component {
             this.setState({stats: data, loading: false});
         }
 
-        setTimeout(this.fetchStatList, 25 * 1000);
+        setTimeout(this.fetchStatList, 20 * 1000);
     }
 
     render() {
@@ -174,7 +174,6 @@ class Stats extends Component {
         } else {
 
             let statMap = stats.map(function (entry) {
-                console.log(entry);
                 let status = "legend bg-error"; // Default
 
                 let vm = entry.vm;
@@ -227,9 +226,7 @@ class Stats extends Component {
                                 <div className="columns is-multiline status-header">
                                     <div className="column is-half is-full-touch">
                                         <center>
-
                                             <Title>DanBot Status</Title>
-
                                         </center>
                                     </div>
 
@@ -257,18 +254,13 @@ class Stats extends Component {
                                         </div>
                                         <ReactTooltip effect="solid"/>
                                     </Page2>
-
                                 </div>
                             </div>
                         </div>
                     </Intro>
 
-
                     <Container>
-
                         {statMap}
-
-
                     </Container>
 
                     <Footer/>
