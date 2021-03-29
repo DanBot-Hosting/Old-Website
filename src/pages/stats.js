@@ -148,7 +148,7 @@ class Stats extends Component {
             this.setState({stats: data, loading: false});
         }
 
-        setTimeout(this.fetchStatList, 20 * 1000);
+        setTimeout(this.fetchStatList, 15 * 1000);
     }
 
     render() {
@@ -233,7 +233,7 @@ class Stats extends Component {
 
                                     <Page2>
                                         <div className="legend-wrapper">
-                                            <div className="legend bg-success" data-tip="Online and responsiveg"
+                                            <div className="legend bg-success" data-tip="Online and responsive"
                                                  onMouseEnter={() => {
                                                      ReactTooltip.rebuild();
                                                  }}>
