@@ -151,14 +151,25 @@ class Node_Status extends Component {
         } else {
             let data = [];
             Object.keys(statRes.data).map(function (key, index) {
-                data.push(statRes.data[key])
+                if (statRes.data[key]) {
+                    statRes.data[key].online = statRes.status[key].status
+                    statRes.data[key].vm = statRes.status[key].is_vm_online
+                    data.push(statRes.data[key])
+                }
             });
             this.setState({stats: data});
 
             let nodes = [];
 
             data.map(function (entry) {
-                let node = entry.servername.split("Node")[1];
+                let node = "null"
+
+                if (entry) {
+                    if (entry.servername) {
+                        node = entry.servername.split("Node")[1]
+                    }
+                }
+
                 nodes.push(node)
 
                 if (!nodes.includes(nodeID)) {
@@ -172,14 +183,27 @@ class Node_Status extends Component {
                     let text = "VM Outage";
                     let toolTip = "Connection to Node completely lost";
 
-                    if (entry.nodeStatus === "Online") {
+                    let vm = entry.vm;
+                    let online = entry.online;
+
+                    if (vm && online) {
                         status = "legend bg-success"
                         text = "Operational"
                         toolTip = "Online and responsive"
-                    } else if (entry.nodeStatus === "Wings Outage") {
-                        status = "legend bg-warning";
-                        text = "Wings Outage"
-                        toolTip = "Online but not connected"
+                    }
+
+                    if (!vm && online) {
+                        status = "legend bg-error"
+                        text = "VM Outage";
+                        toolTip = "Connection to Node completely lost";
+                    }
+
+                    if (vm) {
+                        if (!online) {
+                            status = "legend bg-warning";
+                            text = "Wings Outage"
+                            toolTip = "Online but not connected"
+                        }
                     }
 
                     inf.setState({nodeStatus: status, nodeStatusText: text, toolTipText: toolTip});

@@ -138,8 +138,13 @@ class Stats extends Component {
         } else {
             let data = [];
             Object.keys(statRes.data).map(function (key, index) {
-                data.push(statRes.data[key])
+                if (statRes.data[key]) {
+                    statRes.data[key].online = statRes.status[key].status
+                    statRes.data[key].vm = statRes.status[key].is_vm_online
+                    data.push(statRes.data[key])
+                }
             });
+
             this.setState({stats: data, loading: false});
         }
 
@@ -172,19 +177,36 @@ class Stats extends Component {
                 console.log(entry);
                 let status = "legend bg-error"; // Default
 
-                if (entry.nodeStatus === "Online") {
+                let vm = entry.vm;
+                let online = entry.online;
+
+                if (vm && online) {
                     status = "legend bg-success"
-                } else if (entry.nodeStatus === "Wings Outage") {
-                    status = "legend bg-warning";
+                }
+
+                if (!vm && online) {
+                    status = "legend bg-error"
+                }
+
+                if (vm) {
+                    if (!online) {
+                        status = "legend bg-warning";
+                    }
+                }
+
+                let name = "null";
+                if (entry) {
+                    if (entry.servername) {
+                        name = entry.servername.split("Node")[1]
+                    }
                 }
 
                 return (
                     <div>
-                        <Link to={`/stats/node/${entry.servername.split("Node")[1]}`}
-                              style={{"textDecoration": "none"}}>
+                        <Link to={`/stats/node/${name}`} style={{"textDecoration": "none"}}>
                             <Info>
                                 <Name className={status}>
-                                    Node {entry.servername.split("Node")[1]}
+                                    Node {name}
                                 </Name>
                             </Info>
                         </Link>
