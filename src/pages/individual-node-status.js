@@ -7,8 +7,7 @@ import styled from "styled-components";
 import LoadingIMG from "../images/loading.svg";
 import ErrorPage from "./error";
 import NotFound from "./404";
-import ReactTooltip from "react-tooltip";
-import {Link, withRouter} from "react-router-dom";
+import {withRouter} from "react-router-dom";
 
 const Page = styled.div`
   display: flex;
@@ -157,7 +156,6 @@ class Node_Status extends Component {
             let nodes = [];
 
             data.map(function (entry) {
-                console.log(entry);
                 let node = entry.servername.split("Node")[1];
                 nodes.push(node)
 
@@ -166,7 +164,8 @@ class Node_Status extends Component {
                 }
 
                 if(node === nodeID) {
-                    inf.setState({ found: true, loading: false });
+                    console.log(entry);
+                    inf.setState({found: true, loading: false});
                     let status = "legend bg-error"; // Default
                     let text = "VM Outage";
 

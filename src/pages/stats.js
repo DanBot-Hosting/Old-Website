@@ -213,18 +213,26 @@ class Stats extends Component {
 
                                     <Page2>
                                         <div className="legend-wrapper">
-                                            <div className="legend bg-success">
+                                            <div className="legend bg-success" data-tip="Online and working"
+                                                 onMouseEnter={() => {
+                                                     ReactTooltip.rebuild();
+                                                 }}>
                                                 <span className="legend-marker"></span>Operational
                                             </div>
-                                            <div className="legend bg-warning">
-                                                <span className="legend-marker"></span>Wings
-                                                Outage
+                                            <div className="legend bg-warning" data-tip="Online but not connected"
+                                                 onMouseEnter={() => {
+                                                     ReactTooltip.rebuild();
+                                                 }}>
+                                                <span className="legend-marker"></span>Wings Outage
                                             </div>
-                                            <div className="legend bg-error">
-                                                <span className="legend-marker"></span>VM
-                                                Outage
+                                            <div className="legend bg-error"
+                                                 data-tip="Connection to Node completely lost" onMouseEnter={() => {
+                                                ReactTooltip.rebuild();
+                                            }}>
+                                                <span className="legend-marker"></span>VM Outage
                                             </div>
                                         </div>
+                                        <ReactTooltip effect="solid"/>
                                     </Page2>
 
                                 </div>
