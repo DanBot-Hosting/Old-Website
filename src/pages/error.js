@@ -33,7 +33,7 @@ class error extends Component {
                 <Navbar/>
 
                 <figure>
-                    <div className="sad-mac"></div>
+                    <div className="sad-mac"/>
                     <Title>Oops! I ran into an error while processing your request.</Title>
                 </figure>
 

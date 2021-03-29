@@ -138,7 +138,7 @@ class Node_Status extends Component {
         if (!Node) return (window.location.href = "/stats?error=NO_ID");
         this.fetchStatList = this.fetchStatList.bind(this);
 
-        this.setState({ nodeID: Node });
+        this.setState({nodeID: Node});
     }
 
     fetchStatList = async () => {
@@ -161,11 +161,11 @@ class Node_Status extends Component {
                 let node = entry.servername.split("Node")[1];
                 nodes.push(node)
 
-                if(!nodes.includes(nodeID)) {
-                    inf.setState({ found: false, loading: false });
+                if (!nodes.includes(nodeID)) {
+                    inf.setState({found: false, loading: false});
                 }
 
-                if(node === nodeID) {
+                if (node === nodeID) {
                     console.log(entry);
                     inf.setState({found: true, loading: false});
                     let status = "legend bg-error"; // Default
@@ -182,7 +182,7 @@ class Node_Status extends Component {
                         toolTip = "Online but not connected"
                     }
 
-                    inf.setState({ nodeStatus: status, nodeStatusText: text, toolTipText: toolTip });
+                    inf.setState({nodeStatus: status, nodeStatusText: text, toolTipText: toolTip});
 
                 }
 
@@ -213,7 +213,7 @@ class Node_Status extends Component {
             );
         } else if (error) {
             return <ErrorPage/>;
-        } else if(found) {
+        } else if (found) {
 
             return (
                 <div>
@@ -239,10 +239,10 @@ class Node_Status extends Component {
                                         <div className="legend-wrapper"
                                              data-tip={toolTipText}
                                              onMouseEnter={() => {
-                                            ReactTooltip.rebuild();
-                                        }}>
+                                                 ReactTooltip.rebuild();
+                                             }}>
                                             <div className={nodeStatus}>
-                                                <span className="legend-marker"></span>{nodeStatusText}
+                                                <span className="legend-marker"/>{nodeStatusText}
                                             </div>
                                         </div>
                                         <ReactTooltip effect="solid"/>

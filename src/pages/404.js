@@ -3,12 +3,7 @@ import "../styles/404.css";
 import Helmet from "react-helmet";
 import Navbar from "../components/nav";
 
-class fourOhfour extends Component {
-    state = {};
-
-    async componentDidMount() {
-
-    }
+class FourOhfour extends Component {
 
     render() {
 
@@ -21,25 +16,25 @@ class fourOhfour extends Component {
                 <Navbar/>
 
                 <figure>
-                    <div className="sad-mac"></div>
+                    <div className="sad-mac"/>
                     <figcaption>
                         <span className="sr-text">Error 404: Not Found</span>
-                        <span className="e"></span>
-                        <span className="r"></span>
-                        <span className="r"></span>
-                        <span className="o"></span>
-                        <span className="r"></span>
-                        <span className="_4"></span>
-                        <span className="_0"></span>
-                        <span className="_4"></span>
-                        <span className="n"></span>
-                        <span className="o"></span>
-                        <span className="t"></span>
-                        <span className="f"></span>
-                        <span className="o"></span>
-                        <span className="u"></span>
-                        <span className="n"></span>
-                        <span className="d"></span>
+                        <span className="e"/>
+                        <span className="r"/>
+                        <span className="r"/>
+                        <span className="o"/>
+                        <span className="r"/>
+                        <span className="_4"/>
+                        <span className="_0"/>
+                        <span className="_4"/>
+                        <span className="n"/>
+                        <span className="o"/>
+                        <span className="t"/>
+                        <span className="f"/>
+                        <span className="o"/>
+                        <span className="u"/>
+                        <span className="n"/>
+                        <span className="d"/>
                     </figcaption>
                 </figure>
 
@@ -48,4 +43,4 @@ class fourOhfour extends Component {
     }
 }
 
-export default fourOhfour;
+export default FourOhfour;

@@ -172,7 +172,7 @@ class Stats extends Component {
                 console.log(entry);
                 let status = "legend bg-error"; // Default
 
-                if(entry.nodeStatus === "Online") {
+                if (entry.nodeStatus === "Online") {
                     status = "legend bg-success"
                 } else if (entry.nodeStatus === "Wings Outage") {
                     status = "legend bg-warning";
@@ -180,7 +180,8 @@ class Stats extends Component {
 
                 return (
                     <div>
-                        <Link to={`/stats/node/${entry.servername.split("Node")[1]}`} style={{"textDecoration": "none"}}>
+                        <Link to={`/stats/node/${entry.servername.split("Node")[1]}`}
+                              style={{"textDecoration": "none"}}>
                             <Info>
                                 <Name className={status}>
                                     Node {entry.servername.split("Node")[1]}
@@ -204,7 +205,7 @@ class Stats extends Component {
                                 <div className="columns is-multiline status-header">
                                     <div className="column is-half is-full-touch">
                                         <center>
-                                            {" "}
+
                                             <Title>DanBot Status</Title>
 
                                         </center>
@@ -217,19 +218,19 @@ class Stats extends Component {
                                                  onMouseEnter={() => {
                                                      ReactTooltip.rebuild();
                                                  }}>
-                                                <span className="legend-marker"></span>Operational
+                                                <span className="legend-marker"/>Operational
                                             </div>
                                             <div className="legend bg-warning" data-tip="Online but not connected"
                                                  onMouseEnter={() => {
                                                      ReactTooltip.rebuild();
                                                  }}>
-                                                <span className="legend-marker"></span>Wings Outage
+                                                <span className="legend-marker"/>Wings Outage
                                             </div>
                                             <div className="legend bg-error"
                                                  data-tip="Connection to Node completely lost" onMouseEnter={() => {
                                                 ReactTooltip.rebuild();
                                             }}>
-                                                <span className="legend-marker"></span>VM Outage
+                                                <span className="legend-marker"/>VM Outage
                                             </div>
                                         </div>
                                         <ReactTooltip effect="solid"/>
