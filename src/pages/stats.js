@@ -5,9 +5,35 @@ import Helmet from "react-helmet";
 import * as api from "../util/api";
 import styled from "styled-components";
 import LoadingIMG from "../images/loading.svg";
+import ErrorPage from "./error";
+
+const Page = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 70%;
+  width: 100%;
+  position: fixed;
+`
 
 const Loading = styled.img`
   height: 70%;
+`
+
+const Title = styled.h1`
+  color: #fff;
+  @media screen and (max-width: 768px) {
+    font-size: 25px;
+  }
+`
+
+const Description = styled.h3`
+  color: #fff;
+  text-align: center;
+  @media screen and (max-width: 768px) {
+    font-size: 15px;
+  }
 `
 
 class Stats extends Component {
@@ -23,12 +49,15 @@ class Stats extends Component {
 
     fetchStatList = async () => {
         let statRes = await api.fetchStats();
-        console.log(statRes);
 
         if (statRes.error) {
             this.setState({error: true, loading: false});
         } else {
-            this.setState({stats: statRes.data, loading: false});
+            let data = [];
+            Object.keys(statRes.data).map(function (key, index) {
+                data.push(statRes.data[key])
+            });
+            this.setState({stats: data, loading: false});
         }
 
         setTimeout(this.fetchStatList, 15 * 1000);
@@ -45,16 +74,29 @@ class Stats extends Component {
                         <title> DanBot Hosting | Stats </title>
                     </Helmet>
                     <Navbar/>
-                    <br/><br/><br/><br/><br/><br/>
-                    <center>
-                        <Loading src={LoadingIMG} style={{maxWidth: "170px"}} draggable="false"/>
-                    </center>
 
+                    <Page>
+                        <Loading src={LoadingIMG} style={{maxWidth: "170px"}} draggable="false"/>
+                    </Page>
 
                     <Footer/>
                 </div>
             );
+        } else if (error) {
+            return <ErrorPage/>;
         } else {
+
+            let statMap = stats.map(function (entry) {
+                console.log(entry)
+                return (
+                    <div className="guild">
+                        <h2 className="name" style={{color: "#fff"}}>
+                            Node {entry.servername.split("Node")[1]}
+                        </h2>
+                    </div>
+                )
+            })
+
             return (
                 <div>
                     <Helmet>
@@ -62,6 +104,14 @@ class Stats extends Component {
                     </Helmet>
                     <Navbar/>
 
+
+                    <div className="user-guilds">
+                        <div className="guilds">
+
+                            {statMap}
+
+                        </div>
+                    </div>
 
                     <Footer/>
                 </div>

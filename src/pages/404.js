@@ -3,7 +3,7 @@ import "../styles/404.css";
 import Helmet from "react-helmet";
 import Navbar from "../components/nav";
 
-class Home extends Component {
+class fourOhfour extends Component {
     state = {};
 
     async componentDidMount() {
@@ -48,4 +48,4 @@ class Home extends Component {
     }
 }
 
-export default Home;
+export default fourOhfour;
