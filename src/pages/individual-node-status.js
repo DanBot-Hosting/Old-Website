@@ -126,7 +126,9 @@ class Node_Status extends Component {
         error: false,
         loading: true,
         found: false,
-        nodeID: null
+        nodeID: null,
+        nodeStatus: "legend bg-error",
+        nodeStatusText: "VM Outage"
     };
 
     async componentDidMount() {
@@ -166,12 +168,17 @@ class Node_Status extends Component {
                 if(node === nodeID) {
                     inf.setState({ found: true, loading: false });
                     let status = "legend bg-error"; // Default
+                    let text = "VM Outage";
 
                     if (entry.nodeStatus === "Online") {
                         status = "legend bg-success"
+                        text = "Operational"
                     } else if (entry.nodeStatus === "Wings Outage") {
                         status = "legend bg-warning";
+                        text = "Wings Outage"
                     }
+
+                    inf.setState({ nodeStatus: status, nodeStatusText: text });
 
                 }
 
@@ -183,7 +190,7 @@ class Node_Status extends Component {
     }
 
     render() {
-        const {stats, error, loading, found, nodeID} = this.state;
+        const {stats, error, loading, found, nodeID, nodeStatus, nodeStatusText} = this.state;
 
         if (loading) {
             return (
@@ -226,16 +233,8 @@ class Node_Status extends Component {
 
                                     <Page2>
                                         <div className="legend-wrapper">
-                                            <div className="legend bg-success">
-                                                <span className="legend-marker"></span>Operational
-                                            </div>
-                                            <div className="legend bg-warning">
-                                                <span className="legend-marker"></span>Wings
-                                                Outage
-                                            </div>
-                                            <div className="legend bg-error">
-                                                <span className="legend-marker"></span>VM
-                                                Outage
+                                            <div className={nodeStatus}>
+                                                <span className="legend-marker"></span>{nodeStatusText}
                                             </div>
                                         </div>
                                     </Page2>
@@ -244,7 +243,6 @@ class Node_Status extends Component {
                             </div>
                         </div>
                     </Intro>
-
 
 
                     <Footer/>
