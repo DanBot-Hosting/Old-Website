@@ -120,6 +120,36 @@ const Intro = styled.div`
   }
 `
 
+const DangerAlert = styled.div`
+  padding: 10px 22px;
+  background-color: #FF414B;
+  color: white;
+  margin-bottom: 25px;
+  text-align: center;
+  border-radius: 4px;
+  z-index: 1;
+  width: 52%;
+  font-size: 15px;
+  @media only screen and (max-width: 1000px) {
+    font-size: 13px;
+  }
+`;
+
+const MinorAlert = styled.div`
+  padding: 10px 22px;
+  background-color: #FF9B00;
+  color: white;
+  margin-bottom: 25px;
+  text-align: center;
+  border-radius: 4px;
+  z-index: 1;
+  width: 52%;
+  font-size: 16px;
+  @media only screen and (max-width: 1000px) {
+    font-size: 13px;
+  }
+`;
+
 class Node_Status extends Component {
     state = {
         stats: null,
@@ -276,6 +306,27 @@ class Node_Status extends Component {
                             </div>
                         </div>
                     </Intro>
+
+                    {nodeStatusText === "VM Outage" ? (
+                        <center>
+                            <DangerAlert>
+                                Hello this node is currently experiencing issues which means the stats below are not
+                                correct
+                            </DangerAlert>
+                        </center>
+                    ) : (
+                        <></>
+                    )}
+
+                    {nodeStatusText === "Wings Outage" ? (
+                        <center>
+                            <MinorAlert>
+                                Hello this node is currently experiencing issues with wings however the node is online
+                            </MinorAlert>
+                        </center>
+                    ) : (
+                        <></>
+                    )}
 
 
                     <Footer/>
