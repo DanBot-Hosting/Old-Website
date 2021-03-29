@@ -17,6 +17,16 @@ const Page = styled.div`
   position: fixed;
 `
 
+const Page2 = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  
+  width: 90%;
+  position: fixed;
+`
+
 const Loading = styled.img`
   height: 70%;
 `
@@ -43,7 +53,6 @@ const Container = styled.div`
   justify-content: center;
   padding: 10px;
   @media only screen and (max-width: 900px) {
-    
     width: 100%;
     padding: 0;
   }
@@ -81,12 +90,26 @@ const Name = styled.h2`
   white-space: nowrap;
   overflow: hidden;
   max-width: 180px;
-  
+
   @media only screen and (max-width: 900px) {
     font-size: 17px;
     max-width: none;
     width: 50vw;
     order: 3;
+  }
+`
+const Intro = styled.div`
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 50px;
+  background: #2a2c30;
+  border-radius: 5px;
+  box-shadow: 0 1px 8px 0 rgba(0, 0, 0, 0.2), 0 3px 4px 0 rgba(0, 0, 0, 0.14), 0 3px 3px -2px rgba(0, 0, 0, 0.12);
+  margin: 12.5px 25px 25px;
+  @media only screen and (max-width: 1000px) {
+    flex-direction: column;
+    padding: 35px 25px 25px;
   }
 `
 
@@ -157,10 +180,44 @@ class Stats extends Component {
                     </Helmet>
                     <Navbar/>
 
+                    <Intro>
+                        <div>
+                            <div className="status-wrapper">
+                                <div className="columns is-multiline status-header">
+                                    <div className="column is-half is-full-touch">
+                                        <center>
+                                            {" "}
+                                            <Title>DanBot Status</Title>
+
+                                        </center>
+                                    </div>
+
+
+                                    <Page2>
+                                        <div className="legend-wrapper">
+                                            <div className="legend bg-success">
+                                                <span className="legend-marker"></span>Operational
+                                            </div>
+                                            <div className="legend bg-warning">
+                                                <span className="legend-marker"></span>Wings
+                                                Outage
+                                            </div>
+                                            <div className="legend bg-error">
+                                                <span className="legend-marker"></span>VM
+                                                Outage
+                                            </div>
+                                        </div>
+                                    </Page2>
+
+                                </div>
+                            </div>
+                        </div>
+                    </Intro>
+
 
                     <Container>
 
-                            {statMap}
+                        {statMap}
 
 
                     </Container>

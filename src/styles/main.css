@@ -15,3 +15,69 @@
 body {
     background-color: #23272A;
 }
+
+.status-wrapper .legend-wrapper .legend .legend-marker {
+    width: 10px;
+    height: 10px;
+    border-radius: 100px;
+    margin-right: 12px;
+}
+
+.bg-success.legend .legend-marker {
+    background-color: #01E6CE;
+}
+
+span {
+    font-style: inherit;
+    font-weight: inherit;
+}
+
+.bg-warning.legend .legend-marker {
+    background-color: #FF9B00;
+}
+
+.bg-error.legend .legend-marker {
+    background-color: #FF414B;
+}
+
+.status-wrapper .legend-title {
+    margin-bottom: 20px;
+}
+
+.bg-warning {
+    color: #FF9B00;
+}
+
+.bg-error {
+    color: #FF414B;
+}
+
+.status-wrapper .legend-wrapper .legend {
+    margin-top: 10px;
+    margin-right: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.bg-success {
+    color: #01E6CE;
+}
+
+.status-wrapper .legend-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.ss {
+    left: 500px !important;
+
+    text-align: center;
+}
+
+@media screen and (max-width: 960px) {
+    .ss {
+        left: 75px !important;
+        text-align: center;
+    }
+}
