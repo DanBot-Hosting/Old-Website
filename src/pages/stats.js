@@ -43,7 +43,7 @@ const Container = styled.div`
   justify-content: center;
   padding: 10px;
   @media only screen and (max-width: 900px) {
-    flex-direction: column;
+    
     width: 100%;
     padding: 0;
   }
@@ -71,7 +71,7 @@ const Name = styled.h2`
   margin-block-end: 0.83em;
   margin-inline-start: 0px;
   margin-inline-end: 0px;
-  
+  color: #fff;
   font-weight: 700;
   font-size: 20px;
   text-align: center;
@@ -84,7 +84,6 @@ const Name = styled.h2`
   
   @media only screen and (max-width: 900px) {
     font-size: 17px;
-    text-align: left;
     max-width: none;
     width: 50vw;
     order: 3;
@@ -144,7 +143,7 @@ class Stats extends Component {
                 console.log(entry)
                 return (
                     <Info>
-                        <Name style={{color: "#fff"}}>
+                        <Name>
                             Node {entry.servername.split("Node")[1]}
                         </Name>
                     </Info>
