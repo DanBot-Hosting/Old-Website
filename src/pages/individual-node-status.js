@@ -358,8 +358,7 @@ class Node_Status extends Component {
                     {nodeStatusText === "VM Outage" ? (
                         <center>
                             <DangerAlert>
-                                Hello this node is currently experiencing issues which means the stats below are not
-                                correct
+                                Hello this node is currently experiencing issues which means the stats below are not accurate!
                             </DangerAlert>
                         </center>
                     ) : (
@@ -369,7 +368,7 @@ class Node_Status extends Component {
                     {nodeStatusText === "Wings Outage" ? (
                         <center>
                             <MinorAlert>
-                                Hello this node is currently experiencing issues with wings however the node is online
+                                Hello this node is currently experiencing issues with wings however the VM is online which means your servers should be operational!
                             </MinorAlert>
                         </center>
                     ) : (
