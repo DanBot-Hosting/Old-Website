@@ -42,10 +42,17 @@ function Navbar() {
                             Stats
                         </Link>
                     </li>
-                    <li className="nav-item">
+
+                    {/*<li className="nav-item">
                         <Link to="/plans" className="nav-links" onClick={closeMobileMenu}>
                             Plans
                         </Link>
+                    </li>*/}
+
+                    <li className="nav-item">
+                        <a href="https://panel.danbot.host" target="_blank" className="nav-links" onClick={closeMobileMenu}>
+                            Panel
+                        </a>
                     </li>
                     <li>
                         <Button_Mobile componet={closeMobileMenu}/>
