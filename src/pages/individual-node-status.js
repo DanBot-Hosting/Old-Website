@@ -9,7 +9,6 @@ import ErrorPage from "./error";
 import NotFound from "./404";
 import {withRouter} from "react-router-dom";
 import ReactTooltip from "react-tooltip";
-import LineChart from "../components/chart";
 
 const Page = styled.div`
   display: flex;
@@ -50,9 +49,11 @@ const ToolTitle = styled.h1`
 const Description = styled.h3`
   color: #fff;
   text-align: center;
-  @media screen and (max-width: 768px) {
-    font-size: 15px;
-  }
+  font-size: 15px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+
 `
 
 const Container = styled.div`
@@ -97,12 +98,11 @@ const Name = styled.h2`
   white-space: nowrap;
   overflow: hidden;
   max-width: 180px;
+  color: #fff;
 
   @media only screen and (max-width: 900px) {
     font-size: 17px;
-    max-width: none;
-    width: 50vw;
-    order: 3;
+
   }
 `
 const Intro = styled.div`
@@ -165,7 +165,8 @@ class Node_Status extends Component {
         nodeStatusText: "VM Outage",
         toolTipText: "Connection to Node completely lost",
         statsOvertime: [],
-        hexColor: "#FF414B"
+        hexColor: "#FF414B",
+        uptimeStamp: "null"
     };
 
     async componentDidMount() {
@@ -249,12 +250,26 @@ class Node_Status extends Component {
 
                     statsOvertime.push(entry);
 
+                    let stamp = entry.osuptime;
+                    let string = "null";
+
+                    if (stamp === "NULL") {
+                        stamp = null
+                    }
+
+                    if (stamp) {
+                        let stringSplit = stamp.split(",")
+                        string = `${stringSplit[0]}, ${stringSplit[1]}`
+                    }
+
                     inf.setState({
                         nodeStatus: status,
                         nodeStatusText: text,
                         toolTipText: toolTip,
                         statsOvertime,
-                        hexColor: color
+                        hexColor: color,
+                        stats: entry,
+                        uptimeStamp: string
                     });
 
                 }
@@ -277,7 +292,8 @@ class Node_Status extends Component {
             nodeStatusText,
             toolTipText,
             statsOvertime,
-            hexColor
+            hexColor,
+            uptimeStamp
         } = this.state;
 
         console.log(statsOvertime)
@@ -372,6 +388,75 @@ class Node_Status extends Component {
                             color={hexColor}
                         />
                     </div> */}
+
+                    <Container>
+
+                        <div key={`node-cpu`}>
+                            <div style={{"textDecoration": "none"}}>
+                                <Info>
+                                    <Name>
+                                        CPU:
+                                    </Name>
+
+                                    <Description>
+                                        {stats.cpuload}%
+                                    </Description>
+
+                                </Info>
+                            </div>
+                        </div>
+
+                        <div key={`node-disk`}>
+                            <div style={{"textDecoration": "none"}}>
+                                <Info>
+                                    <Name>
+                                        Disk:
+                                    </Name>
+
+                                    <Description>
+                                        {stats.diskused} / {stats.disktotal}
+                                    </Description>
+
+                                </Info>
+                            </div>
+                        </div>
+
+                        <div key={`node-mem`}>
+                            <div style={{"textDecoration": "none"}}>
+                                <Info>
+                                    <Name>
+                                        Memory:
+                                    </Name>
+
+                                    <Description>
+                                        {stats.memused} / {stats.memtotal}
+                                    </Description>
+
+                                </Info>
+                            </div>
+                        </div>
+
+                        <div key={`node-up`} data-tip={stats.osuptime}
+                             onMouseEnter={() => {
+                                 ReactTooltip.rebuild();
+                             }}>
+                            <div style={{"textDecoration": "none"}}>
+                                <Info>
+                                    <Name>
+                                        Uptime:
+                                    </Name>
+
+
+                                    <Description>
+                                        {uptimeStamp}
+                                    </Description>
+
+
+                                </Info>
+                            </div>
+                        </div>
+
+                    </Container>
 
 
                     <Footer/>
