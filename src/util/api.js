@@ -11,7 +11,7 @@ const getOauth = function (state) {
     url.search = new URLSearchParams([
         ["redirect_uri", baseURL + "/callback"],
         ["response_type", "code"],
-        ["scope", ["identify", "email"].join(" ")],
+        ["scope", ["identify"].join(" ")],
         ["client_id", ID],
         ["prompt", "none"],
         ["state", re]
@@ -29,11 +29,11 @@ const fetchStats = async function () {
 const user = async function (code) {
     if (!code || code === "n/a") return;
     const user = await fetch(`${api}/callback?code=${code}&redirect=${baseURL}`, {
-        method: "POST",
+        method: "GET",
         headers: {"Content-Type": "application/json"}
     }).then(res => res.json());
 
-    localStorage.setItem("user", JSON.stringify(user));
+    console.log(user)
     return user;
 };
 

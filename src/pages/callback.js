@@ -87,14 +87,19 @@ class Home extends Component {
     async fetch() {
         const url = new URLSearchParams(window.location.search);
         const code = url.get("code");
-        if (!code) return window.location.href = "/"
-
-        localStorage.setItem("code", code);
+        if (!code) return window.location.href = "/";
 
         try {
             let info = await api.user(code);
-            console.log(info)
-            if (info.error) this.setState({msg: "An error Occurred", error: true});
+            console.log(info);
+            if (info.error) {
+                this.setState({msg: "An error Occurred", error: true});
+            } else {
+                localStorage.setItem("user", JSON.stringify(info.user));
+                localStorage.setItem("code", code);
+                window.location.href = "/account";
+                this.setState({msg: "Redirecting", error: false});
+            }
         } catch (e) {
             console.log(e)
             this.setState({msg: "An error Occurred", error: true});
