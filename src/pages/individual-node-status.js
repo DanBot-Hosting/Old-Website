@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import Navbar from "../components/nav";
 import Footer from "../components/footer";
 import Helmet from "react-helmet";
@@ -7,7 +7,7 @@ import styled from "styled-components";
 import LoadingIMG from "../images/loading.svg";
 import ErrorPage from "./error";
 import NotFound from "./404";
-import { withRouter } from "react-router-dom";
+import {withRouter} from "react-router-dom";
 import ReactTooltip from "react-tooltip";
 import humanizeDuration from 'humanize-duration';
 
@@ -450,8 +450,6 @@ class Node_Status extends Component {
                                     <Description>
                                         {uptimeStamp}
                                     </Description>
-
-
                                 </Info>
                             </div>
                         </div>
@@ -470,7 +468,20 @@ class Node_Status extends Component {
                                     <Description>
                                         {stats.netrx} / {stats.nettx}
                                     </Description>
+                                </Info>
+                            </div>
+                        </div>
 
+                        <div key={`node-total-servers`}>
+                            <div style={{"textDecoration": "none"}}>
+                                <Info>
+                                    <Name>
+                                        Total Servers:
+                                    </Name>
+
+                                    <Description>
+                                        {stats.dockercontainers}
+                                    </Description>
                                 </Info>
                             </div>
                         </div>
