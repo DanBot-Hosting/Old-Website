@@ -401,7 +401,6 @@ class Node_Status extends Component {
                                     <Description>
                                         {stats.cpuload}%
                                     </Description>
-
                                 </Info>
                             </div>
                         </div>
@@ -416,7 +415,6 @@ class Node_Status extends Component {
                                     <Description>
                                         {stats.diskused} / {stats.disktotal}
                                     </Description>
-
                                 </Info>
                             </div>
                         </div>
@@ -431,7 +429,6 @@ class Node_Status extends Component {
                                     <Description>
                                         {stats.memused} / {stats.memtotal}
                                     </Description>
-
                                 </Info>
                             </div>
                         </div>
@@ -445,7 +442,6 @@ class Node_Status extends Component {
                                     <Name>
                                         Uptime:
                                     </Name>
-
 
                                     <Description>
                                         {uptimeStamp}
