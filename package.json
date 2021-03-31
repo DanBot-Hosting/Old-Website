@@ -9,6 +9,7 @@
     "body-scroll-lock": "^3.1.5",
     "chart.js": "^2.9.4",
     "deepmerge": "^4.2.2",
+    "humanize-duration": "^3.25.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-helmet": "^6.1.0",
