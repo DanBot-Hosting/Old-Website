@@ -338,7 +338,6 @@ class Node_Status extends Component {
                                         </center>
                                     </div>
 
-
                                     <Page2>
                                         <div className="legend-wrapper"
                                             data-tip={toolTipText}
@@ -452,6 +451,25 @@ class Node_Status extends Component {
                                         {uptimeStamp}
                                     </Description>
 
+
+                                </Info>
+                            </div>
+                        </div>
+
+                        <div key={`node-network`}
+                             data-tip={`Received: ${stats.netrx} / Transfered: ${stats.nettx}`}
+                             onMouseEnter={() => {
+                                 ReactTooltip.rebuild();
+                             }}>
+                            <div style={{ "textDecoration": "none" }}>
+                                <Info>
+                                    <Name>
+                                        Network:
+                                    </Name>
+
+                                    <Description>
+                                        {stats.netrx} / {stats.nettx}
+                                    </Description>
 
                                 </Info>
                             </div>
