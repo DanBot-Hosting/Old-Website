@@ -23,6 +23,10 @@ body {
     margin-right: 12px;
 }
 
+.status-wrapper small {
+    color: rgb(230, 218, 218);
+}
+
 .bg-success.legend .legend-marker {
     background-color: #01E6CE;
 }

@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import Navbar from "../components/nav";
 import Footer from "../components/footer";
 import Helmet from "react-helmet";
@@ -7,8 +7,9 @@ import styled from "styled-components";
 import LoadingIMG from "../images/loading.svg";
 import ErrorPage from "./error";
 import NotFound from "./404";
-import {withRouter} from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
+import humanizeDuration from 'humanize-duration';
 
 const Page = styled.div`
   display: flex;
@@ -175,17 +176,17 @@ class Node_Status extends Component {
         if (!Node) return (window.location.href = "/stats?error=NO_ID");
         this.fetchStatList = this.fetchStatList.bind(this);
 
-        this.setState({nodeID: Node});
+        this.setState({ nodeID: Node });
 
     }
 
     fetchStatList = async () => {
         let statRes = await api.fetchStats();
 
-        const {nodeID, statsOvertime} = this.state;
+        const { nodeID, statsOvertime } = this.state;
         let inf = this;
         if (statRes.error) {
-            this.setState({error: true, loading: false});
+            this.setState({ error: true, loading: false });
         } else {
             let data = [];
             Object.keys(statRes.data).map(function (key, index) {
@@ -196,7 +197,7 @@ class Node_Status extends Component {
                 }
             });
 
-            this.setState({stats: data});
+            this.setState({ stats: data });
 
             let nodes = [];
 
@@ -212,12 +213,12 @@ class Node_Status extends Component {
                 nodes.push(node)
 
                 if (!nodes.includes(nodeID)) {
-                    inf.setState({found: false, loading: false});
+                    inf.setState({ found: false, loading: false });
                 }
 
                 if (node === nodeID) {
                     console.log(entry);
-                    inf.setState({found: true, loading: false});
+                    inf.setState({ found: true, loading: false });
                     let status = "legend bg-error"; // Default
                     let text = "VM Outage";
                     let toolTip = "Connection to Node completely lost";
@@ -304,25 +305,24 @@ class Node_Status extends Component {
                     <Helmet>
                         <title> DanBot Hosting | Node Status </title>
                     </Helmet>
-                    <Navbar/>
+                    <Navbar />
 
                     <Page>
-                        <Loading src={LoadingIMG} style={{maxWidth: "170px"}} draggable="false"/>
+                        <Loading src={LoadingIMG} style={{ maxWidth: "170px" }} draggable="false" />
                     </Page>
 
-                    <Footer/>
+                    <Footer />
                 </div>
             );
         } else if (error) {
-            return <ErrorPage/>;
+            return <ErrorPage />;
         } else if (found) {
-
             return (
                 <div>
                     <Helmet>
                         <title> DanBot Hosting | Node {nodeID} </title>
                     </Helmet>
-                    <Navbar/>
+                    <Navbar />
 
                     <Intro>
                         <div>
@@ -332,6 +332,8 @@ class Node_Status extends Component {
                                         <center>
 
                                             <Title>Node {nodeID} Status</Title>
+                                            {stats.timestamp != null ?
+                                                <small>stats received {humanizeDuration(Date.now() - stats.timestamp, { maxDecimalPoints: 2 })} ago</small> : ''}
 
                                         </center>
                                     </div>
@@ -339,15 +341,15 @@ class Node_Status extends Component {
 
                                     <Page2>
                                         <div className="legend-wrapper"
-                                             data-tip={toolTipText}
-                                             onMouseEnter={() => {
-                                                 ReactTooltip.rebuild();
-                                             }}>
+                                            data-tip={toolTipText}
+                                            onMouseEnter={() => {
+                                                ReactTooltip.rebuild();
+                                            }}>
                                             <div className={nodeStatus}>
-                                                <span className="legend-marker"/>{nodeStatusText}
+                                                <span className="legend-marker" />{nodeStatusText}
                                             </div>
                                         </div>
-                                        <ReactTooltip effect="solid"/>
+                                        <ReactTooltip effect="solid" />
                                     </Page2>
 
                                 </div>
@@ -391,7 +393,7 @@ class Node_Status extends Component {
                     <Container>
 
                         <div key={`node-cpu`}>
-                            <div style={{"textDecoration": "none"}}>
+                            <div style={{ "textDecoration": "none" }}>
                                 <Info>
                                     <Name>
                                         CPU:
@@ -406,7 +408,7 @@ class Node_Status extends Component {
                         </div>
 
                         <div key={`node-disk`}>
-                            <div style={{"textDecoration": "none"}}>
+                            <div style={{ "textDecoration": "none" }}>
                                 <Info>
                                     <Name>
                                         Disk:
@@ -421,7 +423,7 @@ class Node_Status extends Component {
                         </div>
 
                         <div key={`node-mem`}>
-                            <div style={{"textDecoration": "none"}}>
+                            <div style={{ "textDecoration": "none" }}>
                                 <Info>
                                     <Name>
                                         Memory:
@@ -436,10 +438,10 @@ class Node_Status extends Component {
                         </div>
 
                         <div key={`node-up`} data-tip={stats.osuptime}
-                             onMouseEnter={() => {
-                                 ReactTooltip.rebuild();
-                             }}>
-                            <div style={{"textDecoration": "none"}}>
+                            onMouseEnter={() => {
+                                ReactTooltip.rebuild();
+                            }}>
+                            <div style={{ "textDecoration": "none" }}>
                                 <Info>
                                     <Name>
                                         Uptime:
@@ -458,11 +460,11 @@ class Node_Status extends Component {
                     </Container>
 
 
-                    <Footer/>
+                    <Footer />
                 </div>
             );
         } else {
-            return <NotFound/>;
+            return <NotFound />;
         }
 
     }
