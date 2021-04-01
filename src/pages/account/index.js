@@ -4,7 +4,6 @@ import Footer from "../../components/footer";
 import Helmet from "react-helmet";
 import styled from "styled-components";
 import * as api from "../../util/api";
-import ReactTooltip from "react-tooltip";
 
 const HomePage = styled.div`
   display: flex;
@@ -53,6 +52,20 @@ const Title = styled.h1`
   }
 `
 
+const Image = styled.img`
+  max-width: 100%;
+  border-radius: 100% !important;
+  margin: auto 0;
+  max-height: 150px;
+  vertical-align: middle;
+  border-style: none;
+
+  @media only screen and (max-width: 767px) {
+    margin: 0 auto;
+    max-width: 150px;
+  }
+`
+
 class Account_Index extends Component {
     state = {
         user: null
@@ -76,10 +89,23 @@ class Account_Index extends Component {
 
         let tag = "User#0000";
         let avatar = "";
+        let username = "User";
+        let discriminator = "#0000"
 
-        if(user) {
+        if (user) {
             tag = user.username + "#" + user.discriminator;
             avatar = "https://cdn.discordapp.com/avatars/" + user.id + "/" + user.avatar;
+            username = user.username;
+            discriminator = user.discriminator;
+        }
+
+
+        let defStyle = {
+            "float": "right",
+            "marginLeft": "2rem",
+            "marginTop": "3rem",
+            "fontSize": "25px",
+            "color": "#fff"
         }
 
         return (
@@ -90,19 +116,35 @@ class Account_Index extends Component {
                 <Navbar/>
 
                 <Intro>
-                    <div>
-                        <div className="status-wrapper">
-                            <div className="columns is-multiline status-header">
-                                <div className="column is-half is-full-touch">
-                                    <center>
-                                        <Title> {tag} </Title>
-                                    </center>
-                                </div>
-
-
-                            </div>
-                        </div>
+                    <div style={{display: "flex"}}>
+                        <center>
+                            <Image
+                                className="avatar"
+                                style={{float: "left"}}
+                                src={avatar}
+                                draggable="false"
+                                alt={"Could not load"}
+                            />{" "}
+                            &nbsp;{" "}
+                            <a style={defStyle}>{tag}</a>
+                        </center>
                     </div>
+
+                    <a
+                        href="#/"
+                        className="btn user-profile logout"
+                        onClick={e => {
+                            e.preventDefault();
+                            localStorage.removeItem("user");
+                            //localStorage.removeItem("guildsAuthorized");
+                            localStorage.removeItem("code");
+                            window.location.href = "/?success=logged_out";
+                        }}
+                    >
+                        {" "}
+                        Logout{" "}
+                    </a>
+
                 </Intro>
 
 
