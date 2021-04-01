@@ -136,7 +136,6 @@ class Account_Index extends Component {
                         onClick={e => {
                             e.preventDefault();
                             localStorage.removeItem("user");
-                            //localStorage.removeItem("guildsAuthorized");
                             localStorage.removeItem("code");
                             window.location.href = "/?success=logged_out";
                         }}
