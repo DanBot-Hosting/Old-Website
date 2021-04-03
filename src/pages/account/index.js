@@ -5,6 +5,7 @@ import Helmet from "react-helmet";
 import styled from "styled-components";
 import * as api from "../../util/api";
 import LoadingIMG from "../../images/logo.png";
+import Loading from "../../images/loading.svg";
 
 const HomePage = styled.div`
   display: flex;
@@ -69,7 +70,8 @@ const Image = styled.img`
 
 class Account_Index extends Component {
     state = {
-        user: null
+        user: null,
+        fetchingUserInfo: true
     };
 
     async componentDidMount() {
@@ -85,7 +87,7 @@ class Account_Index extends Component {
     }
 
     render() {
-        const {user} = this.state;
+        const {user,fetchingUserInfo} = this.state;
         console.log(user)
 
         let tag = "User#0000";
@@ -148,8 +150,14 @@ class Account_Index extends Component {
                 </Intro>
 
 
-                <Description> Hi this page is still under construction. </Description>
-
+                {fetchingUserInfo ? (
+                     <Description>
+                         <br/>
+                         <img src={Loading} draggable={false} style={{ maxWidth: "210px" }} className="avatar" />
+                     </Description>
+                ):(
+                    <Description> Hi this page is still under construction. </Description>
+                )}
 
                 <Footer/>
             </div>
