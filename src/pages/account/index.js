@@ -4,6 +4,7 @@ import Footer from "../../components/footer";
 import Helmet from "react-helmet";
 import styled from "styled-components";
 import * as api from "../../util/api";
+import LoadingIMG from "../../images/logo.png";
 
 const HomePage = styled.div`
   display: flex;
@@ -88,7 +89,7 @@ class Account_Index extends Component {
         console.log(user)
 
         let tag = "User#0000";
-        let avatar = "";
+        let avatar = LoadingIMG;
         let username = "User";
         let discriminator = "#0000"
 
