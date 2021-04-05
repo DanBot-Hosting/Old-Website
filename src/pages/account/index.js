@@ -7,15 +7,21 @@ import * as api from "../../util/api";
 import LoadingIMG from "../../images/logo.png";
 import Loading from "../../images/loading.svg";
 import Error from "../error";
+import {Link} from "react-router-dom";
 
 const HomePage = styled.div`
-  display: flex;
-  flex-direction: column;
+  box-shadow: 0 1px 8px 0 rgba(0, 0, 0, 0.2), 0 3px 4px 0 rgba(0, 0, 0, 0.14), 0 3px 3px -2px rgba(0, 0, 0, 0.12);
+  text-align: center;
   align-items: center;
-  justify-content: center;
-  height: 70%;
-  width: 100%;
-  position: fixed;
+  padding: 50px;
+  background: #2a2c30;
+  border-radius: 5px;
+  margin: 10.5px 20px 20px;
+
+  @media only screen and (max-width: 1000px) {
+    flex-direction: column;
+    padding: 35px 25px 25px;
+  }
 `
 
 const Description = styled.h3`
@@ -50,6 +56,7 @@ const Page2 = styled.div`
 
 const Title = styled.h1`
   color: #fff;
+  text-align: center;
   @media screen and (max-width: 768px) {
     font-size: 25px;
   }
@@ -88,8 +95,13 @@ class Account_Index extends Component {
         this.setState({user: user});
 
         let userInfo = await api.fetchUser(user.id);
+        console.log(userInfo)
         if(userInfo.error) {
-            this.setState({fetchingUserInfo: false, error: true});
+            if (userInfo.message === "User not found") {
+                this.setState({fetchingUserInfo: false, userInfo: null});
+            } else {
+                this.setState({fetchingUserInfo: false, error: true});
+            }
         }
 
         if(userInfo.data) {
@@ -123,8 +135,55 @@ class Account_Index extends Component {
             "color": "#fff"
         }
 
-        if(error) {
+        if (error) {
             return <Error/>;
+        } else if (fetchingUserInfo) {
+            return (
+                <div>
+                    <Helmet>
+                        <title> DanBot Hosting | Account </title>
+                    </Helmet>
+                    <Navbar/>
+
+                    <Intro>
+                        <div style={{display: "flex"}}>
+                            <center>
+                                <Image
+                                    className="avatar"
+                                    style={{float: "left"}}
+                                    src={avatar}
+                                    draggable="false"
+                                    alt={"Could not load"}
+                                />{" "}
+                                &nbsp;{" "}
+                                <a style={defStyle}>{tag}</a>
+                            </center>
+                        </div>
+
+                        <a
+                            href="#/"
+                            className="btn user-profile logout"
+                            onClick={e => {
+                                e.preventDefault();
+                                localStorage.removeItem("user");
+                                localStorage.removeItem("code");
+                                window.location.href = "/?success=logged_out";
+                            }}
+                        >
+                            {" "}
+                            Logout{" "}
+                        </a>
+
+                    </Intro>
+
+                    <Description>
+                        <br/>
+                        <img src={Loading} draggable={false} style={{maxWidth: "210px"}} className="avatar"/>
+                    </Description>
+
+                    <Footer/>
+                </div>
+            );
         } else {
             return (
                 <div>
@@ -164,13 +223,19 @@ class Account_Index extends Component {
 
                     </Intro>
 
-                    {fetchingUserInfo ? (
-                        <Description>
-                            <br/>
-                            <img src={Loading} draggable={false} style={{maxWidth: "210px"}} className="avatar"/>
-                        </Description>
+                    {userInfo ? (
+                        <Description>Not done yet please wait :)</Description>
                     ) : (
-                        <Description> Hi this page is still under construction. </Description>
+                        <center>
+                            <HomePage>
+                                <Title>Hi, {user.username} it seems you do not have an account. <br/> <Link
+                                    style={{"textDecoration": "underline", "color": "inherit"}} to={"/account/new"}>Click
+                                    Here</Link> to create an account <br/> If you think this is wrong please join our <a
+                                    href={"/discord"} target="_blank"
+                                    style={{"textDecoration": "underline", "color": "inherit"}}>Discord Server</a>
+                                </Title>
+                            </HomePage>
+                        </center>
                     )}
 
                     <Footer/>

@@ -29,7 +29,7 @@ function App() {
                     }}/>
 
                     <Route path='/discord' component={() => {
-                        window.location.href = "https://discord.gg/5WbQzb8n"
+                        window.location.href = "https://discord.gg/dFJdApwh2x"
                         return RedirectPage;
                     }}/>
 
