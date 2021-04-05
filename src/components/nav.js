@@ -50,7 +50,8 @@ function Navbar() {
                     </li>*/}
 
                     <li className="nav-item">
-                        <a href="https://panel.danbot.host" target="_blank" className="nav-links" onClick={closeMobileMenu}>
+                        <a href="https://panel.danbot.host" target="_blank" className="nav-links"
+                           onClick={closeMobileMenu}>
                             Panel
                         </a>
                     </li>

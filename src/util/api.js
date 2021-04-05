@@ -1,6 +1,7 @@
 const baseURL = window.origin;
 const api = "https://api.danbot.host";
 const ID = "640161047671603205";
+const { REACT_APP_API_TOKEN } = process.env;
 
 const getOauth = function (state) {
     let re = "/account"
@@ -37,10 +38,23 @@ const user = async function (code) {
     return user;
 };
 
+const fetchUser = async function (ID) {
+    console.log(REACT_APP_API_TOKEN)
+    const res = await fetch(`${api}/user/${ID}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": REACT_APP_API_TOKEN
+        }
+    }).then(res => res.json());
+    return res;
+};
+
 export {
     getOauth,
     fetchStats,
-    user
+    user,
+    fetchUser
 }
 
 export default api;

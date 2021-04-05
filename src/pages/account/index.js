@@ -84,10 +84,13 @@ class Account_Index extends Component {
 
         this.setState({user: user});
 
+        let userInfo = await api.fetchUser(user.id);
+        console.log(userInfo)
+
     }
 
     render() {
-        const {user,fetchingUserInfo} = this.state;
+        const {user, fetchingUserInfo} = this.state;
         console.log(user)
 
         let tag = "User#0000";
@@ -151,11 +154,11 @@ class Account_Index extends Component {
 
 
                 {fetchingUserInfo ? (
-                     <Description>
-                         <br/>
-                         <img src={Loading} draggable={false} style={{ maxWidth: "210px" }} className="avatar" />
-                     </Description>
-                ):(
+                    <Description>
+                        <br/>
+                        <img src={Loading} draggable={false} style={{maxWidth: "210px"}} className="avatar"/>
+                    </Description>
+                ) : (
                     <Description> Hi this page is still under construction. </Description>
                 )}
 
