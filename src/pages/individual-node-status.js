@@ -181,102 +181,107 @@ class Node_Status extends Component {
     }
 
     fetchStatList = async () => {
-        let statRes = await api.fetchStats();
+        try {
+            let statRes = await api.fetchStats();
 
-        const {nodeID, statsOvertime} = this.state;
-        let inf = this;
-        if (statRes.error) {
-            this.setState({error: true, loading: false});
-        } else {
-            let data = [];
-            Object.keys(statRes.data).map(function (key, index) {
-                if (statRes.data[key]) {
-                    statRes.data[key].online = statRes.status[key].status
-                    statRes.data[key].vm = statRes.status[key].is_vm_online
-                    data.push(statRes.data[key])
-                }
-            });
-
-            this.setState({stats: data});
-
-            let nodes = [];
-
-            data.map(function (entry) {
-                let node = "null"
-
-                if (entry) {
-                    if (entry.servername) {
-                        node = entry.servername.split("Node")[1]
+            const {nodeID, statsOvertime} = this.state;
+            let inf = this;
+            if (statRes.error) {
+                this.setState({error: true, loading: false});
+            } else {
+                let data = [];
+                Object.keys(statRes.data).map(function (key, index) {
+                    if (statRes.data[key]) {
+                        statRes.data[key].online = statRes.status[key].status
+                        statRes.data[key].vm = statRes.status[key].is_vm_online
+                        data.push(statRes.data[key])
                     }
-                }
+                });
 
-                nodes.push(node)
+                this.setState({stats: data});
 
-                if (!nodes.includes(nodeID)) {
-                    inf.setState({found: false, loading: false});
-                }
+                let nodes = [];
 
-                if (node === nodeID) {
-                    console.log(entry);
-                    inf.setState({found: true, loading: false});
-                    let status = "legend bg-error"; // Default
-                    let text = "VM Outage";
-                    let toolTip = "Connection to Node completely lost";
-                    let color = "#FF414B"
+                data.map(function (entry) {
+                    let node = "null"
 
-                    let vm = entry.vm;
-                    let online = entry.online;
-
-                    if (vm && online) {
-                        status = "legend bg-success"
-                        text = "Operational"
-                        toolTip = "Online and responsive"
-                        color = "#01E6CE"
-                    }
-
-                    if (!vm && online) {
-                        status = "legend bg-error"
-                        text = "VM Outage";
-                        toolTip = "Connection to Node completely lost";
-                    }
-
-                    if (vm) {
-                        if (!online) {
-                            status = "legend bg-warning";
-                            text = "Wings Outage"
-                            toolTip = "Online but not connected"
-                            color = "#FF9B00"
+                    if (entry) {
+                        if (entry.servername) {
+                            node = entry.servername.split("Node")[1]
                         }
                     }
 
-                    statsOvertime.push(entry);
+                    nodes.push(node)
 
-                    let stamp = entry.osuptime;
-                    let string = "null";
-
-                    if (stamp === "NULL") {
-                        stamp = null
+                    if (!nodes.includes(nodeID)) {
+                        inf.setState({found: false, loading: false});
                     }
 
-                    if (stamp) {
-                        let stringSplit = stamp.split(",")
-                        string = `${stringSplit[0]}, ${stringSplit[1]}`
+                    if (node === nodeID) {
+                        console.log(entry);
+                        inf.setState({found: true, loading: false});
+                        let status = "legend bg-error"; // Default
+                        let text = "VM Outage";
+                        let toolTip = "Connection to Node completely lost";
+                        let color = "#FF414B"
+
+                        let vm = entry.vm;
+                        let online = entry.online;
+
+                        if (vm && online) {
+                            status = "legend bg-success"
+                            text = "Operational"
+                            toolTip = "Online and responsive"
+                            color = "#01E6CE"
+                        }
+
+                        if (!vm && online) {
+                            status = "legend bg-error"
+                            text = "VM Outage";
+                            toolTip = "Connection to Node completely lost";
+                        }
+
+                        if (vm) {
+                            if (!online) {
+                                status = "legend bg-warning";
+                                text = "Wings Outage"
+                                toolTip = "Online but not connected"
+                                color = "#FF9B00"
+                            }
+                        }
+
+                        statsOvertime.push(entry);
+
+                        let stamp = entry.osuptime;
+                        let string = "null";
+
+                        if (stamp === "NULL") {
+                            stamp = null
+                        }
+
+                        if (stamp) {
+                            let stringSplit = stamp.split(",")
+                            string = `${stringSplit[0]}, ${stringSplit[1]}`
+                        }
+
+                        inf.setState({
+                            nodeStatus: status,
+                            nodeStatusText: text,
+                            toolTipText: toolTip,
+                            statsOvertime,
+                            hexColor: color,
+                            stats: entry,
+                            uptimeStamp: string
+                        });
+
                     }
 
-                    inf.setState({
-                        nodeStatus: status,
-                        nodeStatusText: text,
-                        toolTipText: toolTip,
-                        statsOvertime,
-                        hexColor: color,
-                        stats: entry,
-                        uptimeStamp: string
-                    });
+                })
 
-                }
-
-            })
-
+            }
+        } catch (e) {
+            console.log(e)
+            this.setState({error: true, loading: false});
         }
 
         setTimeout(this.fetchStatList, 25 * 1000);

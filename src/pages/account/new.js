@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import Navbar from "../../components/nav";
 import Footer from "../../components/footer";
 import Helmet from "react-helmet";
-import styled from "styled-components";
+import styled, {css} from "styled-components";
 import * as api from "../../util/api";
 import LoadingIMG from "../../images/logo.png";
 import Loading from "../../images/loading.svg";
@@ -33,8 +33,7 @@ const Description = styled.h3`
 `
 
 const Intro = styled.div`
-  flex-direction: row;
-  justify-content: flex-start;
+  text-align: center;
   align-items: center;
   padding: 50px;
   background: #2a2c30;
@@ -76,7 +75,39 @@ const Image = styled.img`
   }
 `
 
-class Account_Index extends Component {
+// test
+const sharedStyles = css`
+  background-color: #eee;
+  height: 40px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  margin: 10px 0 20px 0;
+  padding: 20px;
+  box-sizing: border-box;
+`;
+const StyledInput = styled.input`
+  display: block;
+  width: 100%;
+  ${sharedStyles}
+`;
+
+const inputParsers = {
+    date(input) {
+        const split = input.split("/");
+        const day = split[1];
+        const month = split[0];
+        const year = split[2];
+        return `${year}-${month}-${day}`;
+    },
+    uppercase(input) {
+        return input.toUpperCase();
+    },
+    number(input) {
+        return parseFloat(input);
+    }
+};
+
+class Account_New extends Component {
     state = {
         user: null,
         fetchingUserInfo: true,
@@ -95,7 +126,6 @@ class Account_Index extends Component {
         this.setState({user: user});
 
         try {
-
             let userInfo = await api.fetchUser(user.id);
             console.log(userInfo)
             if(userInfo.error) {
@@ -107,13 +137,62 @@ class Account_Index extends Component {
             }
 
             if(userInfo.data) {
-                this.setState({fetchingUserInfo: false, userInfo: userInfo.data});
+                window.location = "/account"
             }
         } catch (e) {
             console.log(e)
             this.setState({fetchingUserInfo: false, error: true});
         }
 
+    }
+
+    handleSubmit(event) {
+        let currentComponent = this;
+        event.preventDefault();
+        const form = event.target;
+        const data = new FormData(form);
+
+        for (let name of data.keys()) {
+            const input = form.elements[name];
+            const parserName = input.dataset.parse;
+            if (parserName) {
+                const parsedValue = inputParsers[parserName](data.get(name));
+                data.set(name, parsedValue);
+            }
+        }
+
+        gg();
+
+        //console.log(stringifyFormData(data));
+        async function gg() {
+            let d = await api.userCreate(
+                JSON.parse(localStorage.getItem("user")).user.id,
+                stringifyFormData(data)
+            );
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+            if (d) {
+                currentComponent.setState({
+                    info: d.data,
+                    alert: true,
+                    msg: "Your account has been created!",
+                    type: "success"
+                });
+                setTimeout(() => {
+                    currentComponent.setState({
+                        alert: false
+                    });
+                }, 4500);
+            } else {
+                currentComponent.setState({
+                    alert: true,
+                    msg: "Could not create you an account. Please Try Again",
+                    type: "danger"
+                });
+            }
+        }
     }
 
     render() {
@@ -168,20 +247,6 @@ class Account_Index extends Component {
                             </center>
                         </div>
 
-                        <a
-                            href="#/"
-                            className="btn user-profile logout"
-                            onClick={e => {
-                                e.preventDefault();
-                                localStorage.removeItem("user");
-                                localStorage.removeItem("code");
-                                window.location.href = "/?success=logged_out";
-                            }}
-                        >
-                            {" "}
-                            Logout{" "}
-                        </a>
-
                     </Intro>
 
                     <Description>
@@ -215,36 +280,29 @@ class Account_Index extends Component {
                             </center>
                         </div>
 
-                        <a
-                            href="#/"
-                            className="btn user-profile logout"
-                            onClick={e => {
-                                e.preventDefault();
-                                localStorage.removeItem("user");
-                                localStorage.removeItem("code");
-                                window.location.href = "/?success=logged_out";
-                            }}
-                        >
-                            {" "}
-                            Logout{" "}
-                        </a>
-
                     </Intro>
 
-                    {userInfo ? (
-                        <Description>Not done yet please wait :)</Description>
-                    ) : (
-                        <center>
-                            <HomePage>
-                                <Title>Hi, {user.username} it seems you do not have an account. <br/> <Link
-                                    style={{"textDecoration": "underline", "color": "inherit"}} to={"/account/new"}>Click
-                                    Here</Link> to create an account <br/> If you think this is wrong please join our <a
-                                    href={"/discord"} target="_blank"
-                                    style={{"textDecoration": "underline", "color": "inherit"}}>Discord Server</a>
-                                </Title>
-                            </HomePage>
-                        </center>
-                    )}
+                    <center>
+                        <HomePage>
+                            <Title>New Account Form</Title>
+                            <br/>
+
+                            <form onSubmit={this.handleSubmit}>
+
+                                <input type="hidden" name="id" value={user.id}/>
+
+                                <label htmlFor="name">Email</label>
+                                <StyledInput
+                                    type="text"
+                                    name="email"
+
+                                />
+
+
+                            </form>
+
+                        </HomePage>
+                    </center>
 
                     <Footer/>
                 </div>
@@ -254,4 +312,12 @@ class Account_Index extends Component {
     }
 }
 
-export default Account_Index;
+export default Account_New;
+
+function stringifyFormData(fd) {
+    const data = {};
+    for (let key of fd.keys()) {
+        data[key] = fd.get(key);
+    }
+    return JSON.stringify(data, null, 2);
+}

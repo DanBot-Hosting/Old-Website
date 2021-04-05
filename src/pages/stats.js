@@ -131,21 +131,26 @@ class Stats extends Component {
     }
 
     fetchStatList = async () => {
-        let statRes = await api.fetchStats();
+        try {
+            let statRes = await api.fetchStats();
 
-        if (statRes.error) {
+            if (statRes.error) {
+                this.setState({error: true, loading: false});
+            } else {
+                let data = [];
+                Object.keys(statRes.data).map(function (key, index) {
+                    if (statRes.data[key]) {
+                        statRes.data[key].online = statRes.status[key].status
+                        statRes.data[key].vm = statRes.status[key].is_vm_online
+                        data.push(statRes.data[key])
+                    }
+                });
+
+                this.setState({stats: data, loading: false});
+            }
+        } catch (e) {
+            console.log(e)
             this.setState({error: true, loading: false});
-        } else {
-            let data = [];
-            Object.keys(statRes.data).map(function (key, index) {
-                if (statRes.data[key]) {
-                    statRes.data[key].online = statRes.status[key].status
-                    statRes.data[key].vm = statRes.status[key].is_vm_online
-                    data.push(statRes.data[key])
-                }
-            });
-
-            this.setState({stats: data, loading: false});
         }
 
         setTimeout(this.fetchStatList, 15 * 1000);

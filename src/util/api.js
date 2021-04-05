@@ -49,11 +49,23 @@ const fetchUser = async function (ID) {
     return res;
 };
 
+const userCreate = async function (ID) {
+    const res = await fetch(`${api}/user/${ID}/new`, {
+        method: "PORT",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": REACT_APP_API_TOKEN
+        }
+    }).then(res => res.json());
+    return res;
+};
+
 export {
     getOauth,
     fetchStats,
     user,
-    fetchUser
+    fetchUser,
+    userCreate
 }
 
 export default api;
