@@ -39,7 +39,6 @@ const user = async function (code) {
 };
 
 const fetchUser = async function (ID) {
-    console.log(REACT_APP_API_TOKEN)
     const res = await fetch(`${api}/user/${ID}`, {
         method: "GET",
         headers: {
