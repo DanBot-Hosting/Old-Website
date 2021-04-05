@@ -6,6 +6,7 @@ import styled from "styled-components";
 import * as api from "../../util/api";
 import LoadingIMG from "../../images/logo.png";
 import Loading from "../../images/loading.svg";
+import Error from "../error";
 
 const HomePage = styled.div`
   display: flex;
@@ -71,7 +72,9 @@ const Image = styled.img`
 class Account_Index extends Component {
     state = {
         user: null,
-        fetchingUserInfo: true
+        fetchingUserInfo: true,
+        userInfo: null,
+        error: false
     };
 
     async componentDidMount() {
@@ -85,13 +88,19 @@ class Account_Index extends Component {
         this.setState({user: user});
 
         let userInfo = await api.fetchUser(user.id);
-        console.log(userInfo)
+        if(userInfo.error) {
+            this.setState({fetchingUserInfo: false, error: true});
+        }
+
+        if(userInfo.data) {
+            this.setState({fetchingUserInfo: false, userInfo: userInfo.data});
+        }
 
     }
 
     render() {
-        const {user, fetchingUserInfo} = this.state;
-        console.log(user)
+        const {user, fetchingUserInfo, error, userInfo} = this.state;
+        console.log(user,userInfo)
 
         let tag = "User#0000";
         let avatar = LoadingIMG;
@@ -114,57 +123,61 @@ class Account_Index extends Component {
             "color": "#fff"
         }
 
-        return (
-            <div>
-                <Helmet>
-                    <title> DanBot Hosting | Account </title>
-                </Helmet>
-                <Navbar/>
+        if(error) {
+            return <Error/>;
+        } else {
+            return (
+                <div>
+                    <Helmet>
+                        <title> DanBot Hosting | Account </title>
+                    </Helmet>
+                    <Navbar/>
 
-                <Intro>
-                    <div style={{display: "flex"}}>
-                        <center>
-                            <Image
-                                className="avatar"
-                                style={{float: "left"}}
-                                src={avatar}
-                                draggable="false"
-                                alt={"Could not load"}
-                            />{" "}
-                            &nbsp;{" "}
-                            <a style={defStyle}>{tag}</a>
-                        </center>
-                    </div>
+                    <Intro>
+                        <div style={{display: "flex"}}>
+                            <center>
+                                <Image
+                                    className="avatar"
+                                    style={{float: "left"}}
+                                    src={avatar}
+                                    draggable="false"
+                                    alt={"Could not load"}
+                                />{" "}
+                                &nbsp;{" "}
+                                <a style={defStyle}>{tag}</a>
+                            </center>
+                        </div>
 
-                    <a
-                        href="#/"
-                        className="btn user-profile logout"
-                        onClick={e => {
-                            e.preventDefault();
-                            localStorage.removeItem("user");
-                            localStorage.removeItem("code");
-                            window.location.href = "/?success=logged_out";
-                        }}
-                    >
-                        {" "}
-                        Logout{" "}
-                    </a>
+                        <a
+                            href="#/"
+                            className="btn user-profile logout"
+                            onClick={e => {
+                                e.preventDefault();
+                                localStorage.removeItem("user");
+                                localStorage.removeItem("code");
+                                window.location.href = "/?success=logged_out";
+                            }}
+                        >
+                            {" "}
+                            Logout{" "}
+                        </a>
 
-                </Intro>
+                    </Intro>
 
+                    {fetchingUserInfo ? (
+                        <Description>
+                            <br/>
+                            <img src={Loading} draggable={false} style={{maxWidth: "210px"}} className="avatar"/>
+                        </Description>
+                    ) : (
+                        <Description> Hi this page is still under construction. </Description>
+                    )}
 
-                {fetchingUserInfo ? (
-                    <Description>
-                        <br/>
-                        <img src={Loading} draggable={false} style={{maxWidth: "210px"}} className="avatar"/>
-                    </Description>
-                ) : (
-                    <Description> Hi this page is still under construction. </Description>
-                )}
+                    <Footer/>
+                </div>
+            );
+        }
 
-                <Footer/>
-            </div>
-        );
     }
 }
 
