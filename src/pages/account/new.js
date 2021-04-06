@@ -222,7 +222,7 @@ class Account_New extends Component {
                     JSON.parse(localStorage.getItem("user")).id,
                     stringifyFormData(data)
                 );
-                console.log(d)
+                //console.log(d)
                 window.scrollTo({
                     top: 0,
                     behavior: "smooth"
