@@ -343,6 +343,7 @@ class Account_New extends Component {
 
                     <Intro>
                         <Form onSubmit={this.handleSubmit} className='form'>
+                            <input type="hidden" name="id" value={user.id}/>
                             <PField className='field required '>
                                 <Label htmlFor='email'>E-mail</Label>
                                 <Input className='text-input' id='email' name='email' required type='email'/>
