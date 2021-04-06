@@ -211,11 +211,7 @@ html {
     background: #E8474C;
     color: white;
     font-weight: bold;
-    width: auto;
-    margin-left: auto;
-    font-weight: bold;
-    padding-left: 2em;
-    padding-right: 2em;
+
 }
 
 .form .button:hover, .form .button:focus, .form .button:active {
@@ -225,8 +221,6 @@ html {
 
 .form .button:active {
     position: relative;
-    top: 1px;
-    left: 1px;
 }
 
 

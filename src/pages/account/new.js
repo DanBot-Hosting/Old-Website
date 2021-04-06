@@ -123,6 +123,20 @@ const Input = styled.input`
   position: relative;
 `
 
+const Button = styled.button`
+  font: inherit;
+  line-height: normal;
+  cursor: pointer;
+  background: #E8474C;
+  color: white;
+  font-weight: bold;
+  
+  margin-left: auto;
+  font-weight: bold;
+  padding-left: 2em;
+  padding-right: 2em;
+`
+
 const inputParsers = {
     date(input) {
         const split = input.split("/");
@@ -144,11 +158,12 @@ class Account_New extends Component {
         user: null,
         fetchingUserInfo: true,
         userInfo: null,
-        error: false
+        error: false,
+        password: ""
     };
 
     async componentDidMount() {
-
+        this.passwordGenerator = this.passwordGenerator.bind(this);
         let user = localStorage.getItem("user");
         if (user === "n/a") return (window.location.href = api.getOauth());
         if (!user) return (window.location.href = api.getOauth());
@@ -178,6 +193,12 @@ class Account_New extends Component {
 
     }
 
+    passwordGenerator() {
+        this.setState(state => ({
+            password: Math.random().toString(36).slice(2)
+        }));
+    }
+
     handleSubmit(event) {
         let currentComponent = this;
         event.preventDefault();
@@ -195,43 +216,45 @@ class Account_New extends Component {
 
         gg();
 
-        //console.log(stringifyFormData(data));
         async function gg() {
-            let d = await api.userCreate(
-                JSON.parse(localStorage.getItem("user")).user.id,
-                stringifyFormData(data)
-            );
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth"
-            });
-            if (d) {
-                currentComponent.setState({
-                    info: d.data,
-                    alert: true,
-                    msg: "Your account has been created!",
-                    type: "success"
+            try {
+                let d = await api.userCreate(
+                    JSON.parse(localStorage.getItem("user")).id,
+                    stringifyFormData(data)
+                );
+                console.log(d)
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
                 });
-                setTimeout(() => {
+                if (d) {
                     currentComponent.setState({
-                        alert: false
+                        info: d.data,
+                        alert: true,
+                        msg: "Your account has been created!",
+                        type: "success"
                     });
-                }, 4500);
-            } else {
-                currentComponent.setState({
-                    alert: true,
-                    msg: "Could not create you an account. Please Try Again",
-                    type: "danger"
-                });
+                    setTimeout(() => {
+                        currentComponent.setState({
+                            alert: false
+                        });
+                    }, 4500);
+                } else {
+                    currentComponent.setState({
+                        alert: true,
+                        msg: "Could not create you an account. Please Try Again",
+                        type: "danger"
+                    });
+                }
+            } catch (e) {
+                console.log(e)
             }
         }
     }
 
     render() {
-        const {user, fetchingUserInfo, error, userInfo} = this.state;
+        const {user, fetchingUserInfo, error, userInfo, password} = this.state;
         console.log(user,userInfo)
-
-        console.log(this.state)
 
         let tag = "User#0000";
         let avatar = LoadingIMG;
@@ -253,6 +276,8 @@ class Account_New extends Component {
             "fontSize": "25px",
             "color": "#fff"
         }
+
+        console.log(password)
 
         if (error) {
             return <Error/>;
@@ -317,36 +342,37 @@ class Account_New extends Component {
                     <Description>PAGE NOT DONE</Description>
 
                     <Intro>
-                        <Form action='' className='form'>
-                            <PField>
-                                <Label htmlFor='name'>Full name</Label>
-                                <Input className='text-input' id='name' name='name' required type='text'/>
-                            </PField>
-                            <PField className='field required half'>
+                        <Form onSubmit={this.handleSubmit} className='form'>
+                            <PField className='field required '>
                                 <Label htmlFor='email'>E-mail</Label>
                                 <Input className='text-input' id='email' name='email' required type='email'/>
                             </PField>
-                            <PField className='field half'>
-                                <Label htmlFor='phone'>Phone</Label>
-                                <Input className='text-input' id='phone' name='phone' type='phone'/>
-                            </PField>
+
                             <PField className='field half required'>
-                                <Label htmlFor='login'>Login</Label>
-                                <Input className='text-input' id='login' name='login' required type='text'/>
+                                <Label htmlFor='login'>Username</Label>
+                                <Input className='text-input' id='username' name='username' required type='text'/>
                             </PField>
                             <PField className='field half required'>
                                 <Label htmlFor='password'>Password</Label>
-                                <Input className='text-input' id='password' name='password' required type='password'/>
+                                <Input className='text-input' id='password' name='password' required type='password' defaultValue={password} />
                             </PField>
 
+
+                                <PField className='field half'>
+                                    <Input className='button' type='submit' defaultValue='Send'/>
+                                </PField>
 
                             <PField className='field half'>
-                                <Input className='button' type='submit' value='Send'/>
+                                <Input className='button' style={{ "textAlign": "center" }} onClick={this.passwordGenerator}  value='Generate Password'/>
                             </PField>
 
-                            <PField className='field half'>
-                                <Input className='button' type='submit' value='Generate Password'/>
-                            </PField>
+                            {password !== "" ? (
+                                <PField className='field  required'>
+                                    <Label htmlFor='password'>Password: {password}  </Label>
+                                </PField>
+                            ):(
+                                <></>
+                            )}
 
                         </Form>
                     </Intro>
