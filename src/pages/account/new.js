@@ -2,12 +2,12 @@ import React, {Component} from "react";
 import Navbar from "../../components/nav";
 import Footer from "../../components/footer";
 import Helmet from "react-helmet";
-import styled, {css} from "styled-components";
+import styled from "styled-components";
 import * as api from "../../util/api";
 import LoadingIMG from "../../images/logo.png";
 import Loading from "../../images/loading.svg";
 import Error from "../error";
-import {Link} from "react-router-dom";
+
 
 const HomePage = styled.div`
   box-shadow: 0 1px 8px 0 rgba(0, 0, 0, 0.2), 0 3px 4px 0 rgba(0, 0, 0, 0.14), 0 3px 3px -2px rgba(0, 0, 0, 0.12);
@@ -46,12 +46,6 @@ const Intro = styled.div`
     padding: 35px 25px 25px;
   }
 `
-const Page2 = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`
 
 const Title = styled.h1`
   color: #fff;
@@ -75,21 +69,59 @@ const Image = styled.img`
   }
 `
 
-// test
-const sharedStyles = css`
-  background-color: #eee;
-  height: 40px;
-  border-radius: 5px;
-  border: 1px solid #ddd;
-  margin: 10px 0 20px 0;
-  padding: 20px;
-  box-sizing: border-box;
-`;
-const StyledInput = styled.input`
+// temo
+const Label = styled.label`
+  font-weight: bold;
+  color: white;
+  letter-spacing: 0.025em;
+  font-size: 1.125em;
+  line-height: 1.25;
+  position: relative;
+  z-index: 100;
+
+  padding: 0.75em 1em;
+  -webkit-appearance: none;
+  appearance: none;
+  outline: none;
+  border-radius: 0;
+  border: none;
+  background: none;
   display: block;
+
+  :after {
+    content: " *";
+    color: #E8474C;
+    font-weight: normal;
+    font-size: 0.75em;
+    vertical-align: top;
+  }
+
+`
+
+const Form = styled.form`
+  max-width: 40em;
+  margin: 0 auto;
+  position: relative;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+
+`
+
+const PField = styled.p`
   width: 100%;
-  ${sharedStyles}
-`;
+  margin: 0 0 1.5em 0;`
+
+const Input = styled.input`
+  font: inherit;
+  line-height: normal;
+  width: 100%;
+  box-sizing: border-box;
+  background: #222222;
+  color: white;
+  position: relative;
+`
 
 const inputParsers = {
     date(input) {
@@ -282,27 +314,42 @@ class Account_New extends Component {
 
                     </Intro>
 
-                    <center>
-                        <HomePage>
-                            <Title>New Account Form</Title>
-                            <br/>
+                    <Description>PAGE NOT DONE</Description>
 
-                            <form onSubmit={this.handleSubmit}>
+                    <Intro>
+                        <Form action='' className='form'>
+                            <PField>
+                                <Label htmlFor='name'>Full name</Label>
+                                <Input className='text-input' id='name' name='name' required type='text'/>
+                            </PField>
+                            <PField className='field required half'>
+                                <Label htmlFor='email'>E-mail</Label>
+                                <Input className='text-input' id='email' name='email' required type='email'/>
+                            </PField>
+                            <PField className='field half'>
+                                <Label htmlFor='phone'>Phone</Label>
+                                <Input className='text-input' id='phone' name='phone' type='phone'/>
+                            </PField>
+                            <PField className='field half required'>
+                                <Label htmlFor='login'>Login</Label>
+                                <Input className='text-input' id='login' name='login' required type='text'/>
+                            </PField>
+                            <PField className='field half required'>
+                                <Label htmlFor='password'>Password</Label>
+                                <Input className='text-input' id='password' name='password' required type='password'/>
+                            </PField>
 
-                                <input type="hidden" name="id" value={user.id}/>
 
-                                <label htmlFor="name">Email</label>
-                                <StyledInput
-                                    type="text"
-                                    name="email"
+                            <PField className='field half'>
+                                <Input className='button' type='submit' value='Send'/>
+                            </PField>
 
-                                />
+                            <PField className='field half'>
+                                <Input className='button' type='submit' value='Generate Password'/>
+                            </PField>
 
-
-                            </form>
-
-                        </HomePage>
-                    </center>
+                        </Form>
+                    </Intro>
 
                     <Footer/>
                 </div>
