@@ -261,7 +261,6 @@ class Account_New extends Component {
 
     render() {
         const {user, fetchingUserInfo, error, userInfo, password, alert, msg, type} = this.state;
-        console.log(user,userInfo,alert,msg,type)
 
         let tag = "User#0000";
         let avatar = LoadingIMG;
@@ -274,7 +273,6 @@ class Account_New extends Component {
             username = user.username;
             discriminator = user.discriminator;
         }
-
 
         let defStyle = {
             "float": "right",
