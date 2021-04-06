@@ -311,3 +311,25 @@ html {
     will-change: top, left, width;
     transform-origin: 0 0;
 }
+
+.danger {
+    padding: 10px 22px;
+    background-color: rgb(215, 62, 76);
+    color: white;
+    margin-bottom: 25px;
+    text-align: center;
+    border-radius: 4px;
+    z-index: 1;
+    width: 52%;
+}
+
+.success {
+    padding: 10px 22px;
+    background-color: rgb(51, 205, 134);
+    color: white;
+    margin-bottom: 25px;
+    text-align: center;
+    border-radius: 4px;
+    z-index: 1;
+    width: 52%;
+}

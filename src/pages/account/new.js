@@ -159,11 +159,15 @@ class Account_New extends Component {
         fetchingUserInfo: true,
         userInfo: null,
         error: false,
-        password: ""
+        password: "",
+        alert: false,
+        msg: null,
+        type: null
     };
 
     async componentDidMount() {
         this.passwordGenerator = this.passwordGenerator.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
         let user = localStorage.getItem("user");
         if (user === "n/a") return (window.location.href = api.getOauth());
         if (!user) return (window.location.href = api.getOauth());
@@ -174,7 +178,6 @@ class Account_New extends Component {
 
         try {
             let userInfo = await api.fetchUser(user.id);
-            console.log(userInfo)
             if(userInfo.error) {
                 if (userInfo.message === "User not found") {
                     this.setState({fetchingUserInfo: false, userInfo: null});
@@ -217,28 +220,34 @@ class Account_New extends Component {
         gg();
 
         async function gg() {
-            try {
+
                 let d = await api.userCreate(
                     JSON.parse(localStorage.getItem("user")).id,
                     stringifyFormData(data)
                 );
-                //console.log(d)
                 window.scrollTo({
                     top: 0,
                     behavior: "smooth"
                 });
                 if (d) {
-                    currentComponent.setState({
-                        info: d.data,
-                        alert: true,
-                        msg: "Your account has been created!",
-                        type: "success"
-                    });
-                    setTimeout(() => {
+                    if(d.error) {
                         currentComponent.setState({
-                            alert: false
+                            alert: true,
+                            msg: "Could not create you an account. Please Try Again",
+                            type: "danger"
                         });
-                    }, 4500);
+                    } else {
+                        currentComponent.setState({
+                            alert: true,
+                            msg: "Your account has been created!",
+                            type: "success"
+                        });
+                        setTimeout(() => {
+                            currentComponent.setState({
+                                alert: false
+                            });
+                        }, 4500);
+                    }
                 } else {
                     currentComponent.setState({
                         alert: true,
@@ -246,15 +255,13 @@ class Account_New extends Component {
                         type: "danger"
                     });
                 }
-            } catch (e) {
-                console.log(e)
-            }
+
         }
     }
 
     render() {
-        const {user, fetchingUserInfo, error, userInfo, password} = this.state;
-        console.log(user,userInfo)
+        const {user, fetchingUserInfo, error, userInfo, password, alert, msg, type} = this.state;
+        console.log(user,userInfo,alert,msg,type)
 
         let tag = "User#0000";
         let avatar = LoadingIMG;
@@ -276,8 +283,6 @@ class Account_New extends Component {
             "fontSize": "25px",
             "color": "#fff"
         }
-
-        console.log(password)
 
         if (error) {
             return <Error/>;
@@ -339,9 +344,12 @@ class Account_New extends Component {
 
                     </Intro>
 
-                    <Description>PAGE NOT DONE</Description>
-
                     <Intro>
+                        {alert ? (
+                            <center><Description className={type} >{msg}</Description></center>
+                        ):(
+                            <></>
+                        )}
                         <Form onSubmit={this.handleSubmit} className='form'>
                             <input type="hidden" name="id" value={user.id}/>
                             <PField className='field required '>
@@ -364,7 +372,7 @@ class Account_New extends Component {
                                 </PField>
 
                             <PField className='field half'>
-                                <Input className='button' style={{ "textAlign": "center" }} onClick={this.passwordGenerator}  value='Generate Password'/>
+                                <Input className='button' style={{ "textAlign": "center" }} onClick={this.passwordGenerator} defaultValue='Generate Password'/>
                             </PField>
 
                             {password !== "" ? (
