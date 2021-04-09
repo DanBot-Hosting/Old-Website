@@ -8,6 +8,7 @@ import LoadingIMG from "../../images/logo.png";
 import Loading from "../../images/loading.svg";
 import Error from "../error";
 import {Link} from "react-router-dom";
+import AccountSidebar from "../../components/account-sidebar";
 
 const HomePage = styled.div`
   box-shadow: 0 1px 8px 0 rgba(0, 0, 0, 0.2), 0 3px 4px 0 rgba(0, 0, 0, 0.14), 0 3px 3px -2px rgba(0, 0, 0, 0.12);
@@ -76,16 +77,69 @@ const Image = styled.img`
   }
 `
 
+const Container = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 10px;
+  @media only screen and (max-width: 900px) {
+    width: 100%;
+    padding: 0;
+  }
+`
+
+const Info = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  margin: 10px;
+  background: #202024;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.39);
+  transition: all 0.25s ease-in-out;
+  position: relative;
+  width: 200px;
+  overflow: hidden;
+`
+
+const Name = styled.h2`
+  display: block;
+  margin-block-start: 0.83em;
+  margin-block-end: 0.83em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  font-weight: 700;
+  font-size: 20px;
+  text-align: center;
+  z-index: 2;
+  text-shadow: 4px 4px 8px #2a2c30;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 180px;
+
+  @media only screen and (max-width: 900px) {
+    font-size: 17px;
+    max-width: none;
+    width: 50vw;
+    order: 3;
+  }
+`
+
 class Account_Index extends Component {
     state = {
         user: null,
         fetchingUserInfo: true,
         userInfo: null,
-        error: false
+        error: false,
+        fetchingUserServers: true,
+        userServers: null
     };
 
     async componentDidMount() {
-
+        this.fetchUserServers = this.fetchUserServers.bind(this);
         let user = localStorage.getItem("user");
         if (user === "n/a") return (window.location.href = api.getOauth());
         if (!user) return (window.location.href = api.getOauth());
@@ -114,13 +168,40 @@ class Account_Index extends Component {
             this.setState({fetchingUserInfo: false, error: true});
         }
 
+        this.fetchUserServers()
+
+    }
+
+    fetchUserServers() {
+        (async() => {
+            let user = localStorage.getItem("user");
+            user = JSON.parse(user);
+            try {
+                let userServers = await api.fetchUserServers(user.id);
+                console.log(userServers)
+
+                if(userServers.error) {
+                    this.setState({fetchingUserServers: false, error: true});
+                } else {
+                    if(userServers.data) {
+                        this.setState({fetchingUserServers: false, userServers: userServers.data});
+                    } else {
+                        this.setState({fetchingUserServers: false, error: true});
+                    }
+                }
+
+            } catch (e) {
+                console.log(e);
+                this.setState({fetchingUserServers: false, error: true});
+            }
+        })()
     }
 
     render() {
-        const {user, fetchingUserInfo, error, userInfo} = this.state;
-        console.log(user,userInfo)
+        const {user, fetchingUserInfo, error, userInfo, fetchingUserServers, userServers} = this.state;
+        //console.log(user,userInfo)
 
-        console.log(this.state)
+        //console.log(this.state)
 
         let tag = "User#0000";
         let avatar = LoadingIMG;
@@ -192,7 +273,7 @@ class Account_Index extends Component {
                     <Footer/>
                 </div>
             );
-        } else {
+        } else if(userInfo) {
             return (
                 <div>
                     <Helmet>
@@ -231,20 +312,115 @@ class Account_Index extends Component {
 
                     </Intro>
 
-                    {userInfo ? (
-                        <Description>Not done yet please wait :)</Description>
-                    ) : (
-                        <center>
-                            <HomePage>
-                                <Title>Hi, {user.username} it seems you do not have an account. <br/> <Link
-                                    style={{"textDecoration": "underline", "color": "inherit"}} to={"/account/new"}>Click
-                                    Here</Link> to create an account <br/> If you think this is wrong please join our <a
-                                    href={"/discord"} target="_blank"
-                                    style={{"textDecoration": "underline", "color": "inherit"}}>Discord Server</a>
-                                </Title>
-                            </HomePage>
-                        </center>
-                    )}
+                    <div className="navbar-spacer dashboard__container dashboard__analytics">
+                        <div className="dashboard__sidebar">
+
+
+                            <AccountSidebar />
+
+                        </div>
+                        <div className="dashboard__widgets">
+                            <div className="dashboard__main-content">
+                                <div className="dashboard__content">
+
+                                    {userServers ? (
+                                        <Container>
+                                            {userServers.map(server => {
+                                                console.log(server.attributes)
+
+                                                let status = "legend bg-error"; // Default
+
+                                                if(server.attributes.status === "installing") {
+                                                    status = "legend bg-warning";
+                                                }
+
+                                                /*if (vm && online) {
+                                                    status = "legend bg-success"
+                                                }
+
+                                                if (!vm && online) {
+                                                    status = "legend bg-error"
+                                                }
+
+                                                if (vm) {
+                                                    if (!online) {
+                                                        status = "legend bg-warning";
+                                                    }
+                                                }*/
+
+                                                return (
+                                                    <div key={`node-${server.attributes.identifier}`} >
+                                                        <Info>
+                                                            <Name className={status}>
+                                                                {server.attributes.name}
+                                                            </Name>
+                                                        </Info>
+                                                    </div>
+                                                )
+                                            })}
+                                        </Container>
+                                    ):(
+                                        <Description>You have no servers</Description>
+                                    )}
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <Footer/>
+                </div>
+            );
+        } else {
+            return (
+                <div>
+                    <Helmet>
+                        <title> DanBot Hosting | No Account </title>
+                    </Helmet>
+
+                    <Navbar/>
+
+                    <Intro>
+                        <div style={{display: "flex"}}>
+                            <center>
+                                <Image
+                                    className="avatar"
+                                    style={{float: "left"}}
+                                    src={avatar}
+                                    draggable="false"
+                                    alt={"Could not load"}
+                                />{" "}
+                                &nbsp;{" "}
+                                <a style={defStyle}>{tag}</a>
+                            </center>
+                        </div>
+
+                        <a
+                            href="#/"
+                            className="btn user-profile logout"
+                            onClick={e => {
+                                e.preventDefault();
+                                localStorage.removeItem("user");
+                                localStorage.removeItem("code");
+                                window.location.href = "/?success=logged_out";
+                            }}
+                        >
+                            {" "}
+                            Logout{" "}
+                        </a>
+
+                    </Intro>
+
+                    <center>
+                        <HomePage>
+                            <Title>Hi, {user.username} it seems you do not have an account. <br/> <Link
+                                style={{"textDecoration": "underline", "color": "inherit"}} to={"/account/new"}>Click
+                                Here</Link> to create an account <br/> If you think this is wrong please join our <a
+                                href={"/discord"} target="_blank"
+                                style={{"textDecoration": "underline", "color": "inherit"}}>Discord Server</a>
+                            </Title>
+                        </HomePage>
+                    </center>
 
                     <Footer/>
                 </div>

@@ -333,3 +333,36 @@ html {
     z-index: 1;
     width: 52%;
 }
+
+/*side nav*/
+
+:root {
+    --purple: #b05cd6;
+    --purple-dark: #492991;
+    --purple-light: #ff8af9;
+    --purple-average: #d870e8;
+    --blue: #78a4fa;
+    --grey: #36393f;
+    --grey-dark: #2a2c30;
+    --grey-darker: #202024;
+    --grey-light: #727375;
+    --grey-lighter: #afafaf;
+    --black: #000;
+    --white: #fff;
+    --transparent: transparent;
+    --radius-small: 3px;
+    --radius-medium: 5px;
+    --radius-big: 50px;
+    --radius-half: 50%;
+    --radius-full: 100%;
+    --shadow-all: 0 1px 8px 0 rgba(0, 0, 0, 0.2), 0 3px 4px 0 rgba(0, 0, 0, 0.14),
+    0 3px 3px -2px rgba(0, 0, 0, 0.12);
+    --shadow-bottom: 0 2px 5px 0 rgba(0, 0, 0, 0.39);
+    --transition-base: all 0.25s ease-in-out;
+    --sidebar-section-header: #a7a5b8;
+    --sidebar-section-text: #c7d3dc;
+    --sidebar-section-hover: #292d2f;
+    --input-background: #34363a;
+
+}
+

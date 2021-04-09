@@ -61,12 +61,24 @@ const userCreate = async function (ID,body) {
     return res;
 };
 
+const fetchUserServers = async function (ID) {
+    const res = await fetch(`${api}/user/${ID}/servers`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": REACT_APP_API_TOKEN
+        }
+    }).then(res => res.json());
+    return res;
+};
+
 export {
     getOauth,
     fetchStats,
     user,
     fetchUser,
-    userCreate
+    userCreate,
+    fetchUserServers
 }
 
 export default api;
