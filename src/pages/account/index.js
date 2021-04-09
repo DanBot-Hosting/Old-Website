@@ -100,7 +100,7 @@ const Info = styled.div`
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.39);
   transition: all 0.25s ease-in-out;
   position: relative;
-  width: 200px;
+  width: 400px;
   overflow: hidden;
 `
 
@@ -112,13 +112,14 @@ const Name = styled.h2`
   margin-inline-end: 0px;
   font-weight: 700;
   font-size: 20px;
-  text-align: center;
+  left: 0;
   z-index: 2;
   text-shadow: 4px 4px 8px #2a2c30;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
   max-width: 180px;
+  color: #ffffff;
 
   @media only screen and (max-width: 900px) {
     font-size: 17px;
@@ -127,6 +128,82 @@ const Name = styled.h2`
     order: 3;
   }
 `
+
+const Status = styled.div`
+  width: 0.5rem;
+  position: absolute;
+  right: 0px;
+  color: #78a4fa;
+`
+
+class Account_Server_List extends Component {
+
+    state = {
+        servers: null
+    }
+
+    async componentDidMount() {
+        if (this.props.servers) {
+            this.setState({servers: this.props.servers});
+        }
+    }
+
+    render() {
+        const {servers} = this.state;
+
+        if (servers) {
+            return (
+                <>
+                    <Container>
+                        {servers.map(server => {
+                            console.log(server.attributes)
+
+                            let status = "legend bg-error"; // Default
+
+                            if (server.attributes.status === "installing") {
+                                status = "legend bg-warning";
+                            }
+
+                            /*if (vm && online) {
+                                status = "legend bg-success"
+                            }
+
+                            if (!vm && online) {
+                                status = "legend bg-error"
+                            }
+
+                            if (vm) {
+                                if (!online) {
+                                    status = "legend bg-warning";
+                                }
+                            }*/
+                            return (
+                                <div key={`node-${server.attributes.identifier}`}>
+                                    <Info>
+                                        <Name>
+                                            {server.attributes.name}
+                                        </Name>
+
+                                        <Status color={status}>
+
+                                        </Status>
+
+                                    </Info>
+                                </div>
+                            )
+                        })}
+                    </Container>
+
+                </>
+            )
+        } else {
+            return (
+                <Description>No Servers found</Description>
+            )
+        }
+
+    }
+}
 
 class Account_Index extends Component {
     state = {
@@ -200,7 +277,7 @@ class Account_Index extends Component {
     render() {
         const {user, fetchingUserInfo, error, userInfo, fetchingUserServers, userServers} = this.state;
         //console.log(user,userInfo)
-
+        console.log(fetchingUserServers)
         //console.log(this.state)
 
         let tag = "User#0000";
@@ -214,7 +291,6 @@ class Account_Index extends Component {
             username = user.username;
             discriminator = user.discriminator;
         }
-
 
         let defStyle = {
             "float": "right",
@@ -273,7 +349,7 @@ class Account_Index extends Component {
                     <Footer/>
                 </div>
             );
-        } else if(userInfo) {
+        } else if (userInfo) {
             return (
                 <div>
                     <Helmet>
@@ -312,61 +388,19 @@ class Account_Index extends Component {
 
                     </Intro>
 
-                    <div className="navbar-spacer dashboard__container dashboard__analytics">
-                        <div className="dashboard__sidebar">
+                    <div>
+                        <AccountSidebar/>
 
-
-                            <AccountSidebar />
-
-                        </div>
-                        <div className="dashboard__widgets">
-                            <div className="dashboard__main-content">
-                                <div className="dashboard__content">
-
-                                    {userServers ? (
-                                        <Container>
-                                            {userServers.map(server => {
-                                                console.log(server.attributes)
-
-                                                let status = "legend bg-error"; // Default
-
-                                                if(server.attributes.status === "installing") {
-                                                    status = "legend bg-warning";
-                                                }
-
-                                                /*if (vm && online) {
-                                                    status = "legend bg-success"
-                                                }
-
-                                                if (!vm && online) {
-                                                    status = "legend bg-error"
-                                                }
-
-                                                if (vm) {
-                                                    if (!online) {
-                                                        status = "legend bg-warning";
-                                                    }
-                                                }*/
-
-                                                return (
-                                                    <div key={`node-${server.attributes.identifier}`} >
-                                                        <Info>
-                                                            <Name className={status}>
-                                                                {server.attributes.name}
-                                                            </Name>
-                                                        </Info>
-                                                    </div>
-                                                )
-                                            })}
-                                        </Container>
-                                    ):(
-                                        <Description>You have no servers</Description>
-                                    )}
-
-                                </div>
-                            </div>
-                        </div>
                     </div>
+
+                    {fetchingUserServers ? (
+                        <Description>
+                            <br/><br/>
+                            <img src={Loading} draggable={false} style={{maxWidth: "210px"}} className="avatar"/>
+                        </Description>
+                    ) : (
+                        <Account_Server_List servers={userServers}/>
+                    )}
 
                     <Footer/>
                 </div>
