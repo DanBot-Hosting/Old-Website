@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Plus, Settings, User} from "react-feather";
+import {Plus, Server, Settings, User} from "react-feather";
 import {Link} from "react-router-dom";
 import ReactTooltip from "react-tooltip";
 import styled from "styled-components";
@@ -15,9 +15,10 @@ const Page = styled(Link)`
   grid-gap: 8px;
   gap: 8px;
   align-items: center;
-  color: #c7d3dc;
+  color: ${props => props.active ? "#bcc8d2" : "#c7d3dc"};
   cursor: pointer;
-
+  background-color: ${props => props.active ? "#282b2d" : "inherit"};
+  border-color: ${props => props.active ? "#7d7e80" : "inherit"};;
 
   &:hover {
     background-color: #222426;
@@ -58,6 +59,8 @@ const SectionWrap = styled.div`
 class AccountSidebar extends Component {
 
     render() {
+        let url = window.location.pathname;
+
         return (
             <>
                 <ReactTooltip effect='solid'/>
@@ -66,15 +69,19 @@ class AccountSidebar extends Component {
                     <SectionTitle>General</SectionTitle>
                     <SectionWrap>
 
-                        <Page to="/account/settings">
+                        <Page to="/account" active={url === "/account"}>
+                            <Server/> Servers
+                        </Page>
+
+                        <Page to="/account/settings" active={url === "/account/settings"}>
                             <Settings/> Settings
                         </Page>
 
-                        <Page to="/account/bots">
+                        <Page to="/account/bots" active={url === "/account/bots"}>
                             <User/> Bots
                         </Page>
 
-                        <Page to="/account/servers/new">
+                        <Page to="/account/servers/new" active={url === "/account/servers/new"}>
                             <Plus/> New Server
                         </Page>
 

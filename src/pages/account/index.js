@@ -177,7 +177,7 @@ class Account_Server_List extends Component {
                                 }
                             }*/
                             return (
-                                <div key={`node-${server.attributes.identifier}`}>
+                                <Link to={`/account/servers/${server.attributes.identifier}`} style={{"textDecoration":"none"}} key={`server-${server.attributes.identifier}`}>
                                     <Info>
                                         <Name>
                                             {server.attributes.name}
@@ -188,7 +188,7 @@ class Account_Server_List extends Component {
                                         </Status>
 
                                     </Info>
-                                </div>
+                                </Link>
                             )
                         })}
                     </Container>

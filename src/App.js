@@ -11,6 +11,7 @@ import Callback from "./pages/callback";
 import Account_Index from "./pages/account";
 import Node_Status from "./pages/individual-node-status";
 import Account_New from "./pages/account/new";
+import Account_Settings from "./pages/account/settings";
 
 function App() {
     return (
@@ -24,6 +25,7 @@ function App() {
                     <Route exact path="/callback" component={Callback}/>
                     <Route exact path="/account" component={Account_Index}/>
                     <Route exact path="/account/new" component={Account_New}/>
+                    <Route exact path="/account/settings" component={Account_Settings}/>
 
                     <Route path='/login' component={() => {
                         window.location.href = api.getOauth();
