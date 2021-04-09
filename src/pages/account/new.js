@@ -8,7 +8,6 @@ import LoadingIMG from "../../images/logo.png";
 import Loading from "../../images/loading.svg";
 import Error from "../error";
 
-
 const HomePage = styled.div`
   box-shadow: 0 1px 8px 0 rgba(0, 0, 0, 0.2), 0 3px 4px 0 rgba(0, 0, 0, 0.14), 0 3px 3px -2px rgba(0, 0, 0, 0.12);
   text-align: center;
@@ -69,7 +68,6 @@ const Image = styled.img`
   }
 `
 
-// temo
 const Label = styled.label`
   font-weight: bold;
   color: white;
@@ -349,7 +347,9 @@ class Account_New extends Component {
                             <></>
                         )}
                         <Form onSubmit={this.handleSubmit} className='form'>
+
                             <input type="hidden" name="id" value={user.id}/>
+
                             <PField className='field required '>
                                 <Label htmlFor='email'>E-mail</Label>
                                 <Input className='text-input' id='email' name='email' required type='email'/>
@@ -359,25 +359,27 @@ class Account_New extends Component {
                                 <Label htmlFor='login'>Username</Label>
                                 <Input className='text-input' id='username' name='username' required type='text'/>
                             </PField>
+
                             <PField className='field half required'>
                                 <Label htmlFor='password'>Password</Label>
-                                <Input className='text-input' id='password' name='password' required type='password' defaultValue={password} />
+                                <Input className='text-input' id='password' name='password' required type='password'
+                                       defaultValue={password}/>
                             </PField>
 
-
-                                <PField className='field half'>
-                                    <Input className='button' type='submit' defaultValue='Send'/>
-                                </PField>
+                            <PField className='field half'>
+                                <Input className='button' type='submit' defaultValue='Send'/>
+                            </PField>
 
                             <PField className='field half'>
-                                <Input className='button' style={{ "textAlign": "center" }} onClick={this.passwordGenerator} defaultValue='Generate Password'/>
+                                <Input className='button' style={{"textAlign": "center"}}
+                                       onClick={this.passwordGenerator} defaultValue='Generate Password'/>
                             </PField>
 
                             {password !== "" ? (
                                 <PField className='field  required'>
                                     <Label htmlFor='password'>Password: {password}  </Label>
                                 </PField>
-                            ):(
+                            ) : (
                                 <></>
                             )}
 

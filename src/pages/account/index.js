@@ -137,7 +137,6 @@ const Status = styled.div`
 `
 
 class Account_Server_List extends Component {
-
     state = {
         servers: null
     }
@@ -276,9 +275,6 @@ class Account_Index extends Component {
 
     render() {
         const {user, fetchingUserInfo, error, userInfo, fetchingUserServers, userServers} = this.state;
-        //console.log(user,userInfo)
-        console.log(fetchingUserServers)
-        //console.log(this.state)
 
         let tag = "User#0000";
         let avatar = LoadingIMG;
