@@ -12,6 +12,7 @@ import Account_Index from "./pages/account";
 import Node_Status from "./pages/individual-node-status";
 import Account_New from "./pages/account/new";
 import Account_Settings from "./pages/account/settings";
+import Pass_Word_Reset from "./pages/account/password-reset";
 
 function App() {
     return (
@@ -26,6 +27,7 @@ function App() {
                     <Route exact path="/account" component={Account_Index}/>
                     <Route exact path="/account/new" component={Account_New}/>
                     <Route exact path="/account/settings" component={Account_Settings}/>
+                    <Route exact path="/account/settings/password-reset" component={Pass_Word_Reset}/>
 
                     <Route path='/login' component={() => {
                         window.location.href = api.getOauth();

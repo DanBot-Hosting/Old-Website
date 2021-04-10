@@ -11,6 +11,7 @@
     "deepmerge": "^4.2.2",
     "humanize-duration": "^3.25.1",
     "react": "^17.0.1",
+    "react-confirm-alert": "^2.7.0",
     "react-dom": "^17.0.1",
     "react-feather": "^2.0.9",
     "react-helmet": "^6.1.0",

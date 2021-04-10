@@ -384,10 +384,7 @@ class Account_Index extends Component {
 
                     </Intro>
 
-                    <div>
                         <AccountSidebar/>
-
-                    </div>
 
                     {fetchingUserServers ? (
                         <Description>

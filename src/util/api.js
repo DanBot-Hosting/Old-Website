@@ -72,13 +72,25 @@ const fetchUserServers = async function (ID) {
     return res;
 };
 
+const fetchUserCode = async function (ID) {
+    const res = await fetch(`${api}/user/${ID}/password-reset-code`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": REACT_APP_API_TOKEN
+        }
+    }).then(res => res.json());
+    return res;
+};
+
 export {
     getOauth,
     fetchStats,
     user,
     fetchUser,
     userCreate,
-    fetchUserServers
+    fetchUserServers,
+    fetchUserCode
 }
 
 export default api;

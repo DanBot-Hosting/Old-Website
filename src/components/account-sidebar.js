@@ -17,7 +17,7 @@ const Page = styled(Link)`
   align-items: center;
   color: ${props => props.active ? "#bcc8d2" : "#c7d3dc"};
   cursor: pointer;
-  background-color: ${props => props.active ? "#282b2d" : "inherit"};
+  background-color: ${props => props.active ? "#2a2c30" : "inherit"};
   border-color: ${props => props.active ? "#7d7e80" : "inherit"};;
 
   &:hover {
@@ -77,13 +77,13 @@ class AccountSidebar extends Component {
                             <Settings/> Settings
                         </Page>
 
-                        <Page to="/account/bots" active={url === "/account/bots"}>
+                        {/*<Page to="/account/bots" active={url === "/account/bots"}>
                             <User/> Bots
                         </Page>
 
                         <Page to="/account/servers/new" active={url === "/account/servers/new"}>
                             <Plus/> New Server
-                        </Page>
+                        </Page>*/}
 
                     </SectionWrap>
                 </Section>
