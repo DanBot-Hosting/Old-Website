@@ -177,7 +177,8 @@ class Account_Server_List extends Component {
                                 }
                             }*/
                             return (
-                                <Link to={`/account/servers/${server.attributes.identifier}`} style={{"textDecoration":"none"}} key={`server-${server.attributes.identifier}`}>
+                                <Link to={`/account/servers/${server.attributes.identifier}`}
+                                      style={{"textDecoration": "none"}} key={`server-${server.attributes.identifier}`}>
                                     <Info>
                                         <Name>
                                             {server.attributes.name}
@@ -228,7 +229,7 @@ class Account_Index extends Component {
 
             let userInfo = await api.fetchUser(user.id);
             console.log(userInfo)
-            if(userInfo.error) {
+            if (userInfo.error) {
                 if (userInfo.message === "User not found") {
                     this.setState({fetchingUserInfo: false, userInfo: null});
                 } else {
@@ -236,7 +237,7 @@ class Account_Index extends Component {
                 }
             }
 
-            if(userInfo.data) {
+            if (userInfo.data) {
                 this.setState({fetchingUserInfo: false, userInfo: userInfo.data});
             }
         } catch (e) {
@@ -249,17 +250,17 @@ class Account_Index extends Component {
     }
 
     fetchUserServers() {
-        (async() => {
+        (async () => {
             let user = localStorage.getItem("user");
             user = JSON.parse(user);
             try {
                 let userServers = await api.fetchUserServers(user.id);
                 console.log(userServers)
 
-                if(userServers.error) {
+                if (userServers.error) {
                     this.setState({fetchingUserServers: false, error: true});
                 } else {
-                    if(userServers.data) {
+                    if (userServers.data) {
                         this.setState({fetchingUserServers: false, userServers: userServers.data});
                     } else {
                         this.setState({fetchingUserServers: false, error: true});
@@ -384,7 +385,7 @@ class Account_Index extends Component {
 
                     </Intro>
 
-                        <AccountSidebar/>
+                    <AccountSidebar/>
 
                     {fetchingUserServers ? (
                         <Description>

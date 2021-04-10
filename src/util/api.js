@@ -1,7 +1,7 @@
 const baseURL = window.origin;
 const api = "https://api.danbot.host";
 const ID = "640161047671603205";
-const { REACT_APP_API_TOKEN } = process.env;
+const {REACT_APP_API_TOKEN} = process.env;
 
 const getOauth = function (state) {
     let re = "/account"
@@ -49,7 +49,7 @@ const fetchUser = async function (ID) {
     return res;
 };
 
-const userCreate = async function (ID,body) {
+const userCreate = async function (ID, body) {
     const res = await fetch(`${api}/user/${ID}/new`, {
         method: "POST",
         headers: {

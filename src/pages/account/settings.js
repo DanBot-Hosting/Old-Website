@@ -9,6 +9,7 @@ import Loading from "../../images/loading.svg";
 import AccountSidebar from "../../components/account-sidebar";
 import {confirmAlert} from "react-confirm-alert";
 import "../../styles/404.css";
+
 var crypto = require('crypto');
 
 const HomePage = styled.div`

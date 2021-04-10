@@ -128,7 +128,7 @@ const Button = styled.button`
   background: #E8474C;
   color: white;
   font-weight: bold;
-  
+
   margin-left: auto;
   font-weight: bold;
   padding-left: 2em;
@@ -176,7 +176,7 @@ class Account_New extends Component {
 
         try {
             let userInfo = await api.fetchUser(user.id);
-            if(userInfo.error) {
+            if (userInfo.error) {
                 if (userInfo.message === "User not found") {
                     this.setState({fetchingUserInfo: false, userInfo: null});
                 } else {
@@ -184,7 +184,7 @@ class Account_New extends Component {
                 }
             }
 
-            if(userInfo.data) {
+            if (userInfo.data) {
                 window.location = "/account"
             }
         } catch (e) {
@@ -219,40 +219,40 @@ class Account_New extends Component {
 
         async function gg() {
 
-                let d = await api.userCreate(
-                    JSON.parse(localStorage.getItem("user")).id,
-                    stringifyFormData(data)
-                );
-                window.scrollTo({
-                    top: 0,
-                    behavior: "smooth"
-                });
-                if (d) {
-                    if(d.error) {
-                        currentComponent.setState({
-                            alert: true,
-                            msg: "Could not create you an account. Please Try Again",
-                            type: "danger"
-                        });
-                    } else {
-                        currentComponent.setState({
-                            alert: true,
-                            msg: "Your account has been created!",
-                            type: "success"
-                        });
-                        setTimeout(() => {
-                            currentComponent.setState({
-                                alert: false
-                            });
-                        }, 4500);
-                    }
-                } else {
+            let d = await api.userCreate(
+                JSON.parse(localStorage.getItem("user")).id,
+                stringifyFormData(data)
+            );
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+            if (d) {
+                if (d.error) {
                     currentComponent.setState({
                         alert: true,
                         msg: "Could not create you an account. Please Try Again",
                         type: "danger"
                     });
+                } else {
+                    currentComponent.setState({
+                        alert: true,
+                        msg: "Your account has been created!",
+                        type: "success"
+                    });
+                    setTimeout(() => {
+                        currentComponent.setState({
+                            alert: false
+                        });
+                    }, 4500);
                 }
+            } else {
+                currentComponent.setState({
+                    alert: true,
+                    msg: "Could not create you an account. Please Try Again",
+                    type: "danger"
+                });
+            }
 
         }
     }
@@ -342,8 +342,8 @@ class Account_New extends Component {
 
                     <Intro>
                         {alert ? (
-                            <center><Description className={type} >{msg}</Description></center>
-                        ):(
+                            <center><Description className={type}>{msg}</Description></center>
+                        ) : (
                             <></>
                         )}
                         <Form onSubmit={this.handleSubmit} className='form'>

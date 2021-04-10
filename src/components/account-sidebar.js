@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Plus, Server, Settings, User} from "react-feather";
+import {Server, Settings} from "react-feather";
 import {Link} from "react-router-dom";
 import ReactTooltip from "react-tooltip";
 import styled from "styled-components";
