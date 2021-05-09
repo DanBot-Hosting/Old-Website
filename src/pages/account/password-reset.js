@@ -58,6 +58,11 @@ class Pass_Word_Reset extends Component {
         if (!user) return (window.location.href = api.getOauth());
         user = JSON.parse(user);
 
+        let ver = localStorage.getItem("ver");
+        if(!ver) return (window.location.href = '/account/settings');
+        let c = localStorage.getItem("c");
+        if(!c) return (window.location.href = '/account/settings');
+
         this.setState({user: user});
 
         try {

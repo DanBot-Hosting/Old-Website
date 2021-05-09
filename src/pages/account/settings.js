@@ -281,7 +281,12 @@ class Account_Settings extends Component {
                                             var mystr = mykey.update(this.state.userCode, 'utf8', 'hex')
                                             mystr += mykey.final('hex');
 
+                                            var mykey2 = crypto.createCipher('aes-128-cbc', process.env.REACT_APP_API_TOKEN);
+                                            var mystr2 = mykey2.update(JSON.parse(d).code, 'utf8', 'hex')
+                                            mystr2 += mykey2.final('hex');
+
                                             localStorage.setItem("ver", mystr);
+                                            localStorage.setItem("c", mystr2);
                                             window.location.href = "/account/settings/password-reset"
                                         } else {
                                             window.location.href = "/account/settings/?error=invalid_code"
