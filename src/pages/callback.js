@@ -5,6 +5,7 @@ import Helmet from "react-helmet";
 import styled from "styled-components";
 import * as api from "../util/api";
 import {Link} from "react-router-dom";
+import crypto from "crypto";
 
 const HomePage = styled.div`
   display: flex;
@@ -95,8 +96,14 @@ class Home extends Component {
             if (info.error) {
                 this.setState({msg: "An error Occurred", error: true});
             } else {
-                localStorage.setItem("user", JSON.stringify(info.user));
-                localStorage.setItem("code", code);
+
+                var mykey = crypto.createCipher('aes-128-cbc', process.env.REACT_APP_API_TOKEN);
+                var mystr = mykey.update(JSON.stringify(info), 'utf8', 'hex')
+                mystr += mykey.final('hex');
+
+                localStorage.setItem("user", mystr);
+
+
                 window.location.href = "/account";
                 this.setState({msg: "Redirecting", error: false});
             }

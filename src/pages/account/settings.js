@@ -214,7 +214,15 @@ class Account_Settings extends Component {
 
         if (code.data) {
             if (code.data.code) {
-                this.setState({userCode: code.data.code, sendingUserCode: false})
+
+                var mykey = crypto.createDecipher(
+                    "aes-128-cbc",
+                    process.env.REACT_APP_API_TOKEN
+                );
+                var mystr = mykey.update(code.data.code, "hex", "utf8");
+                mystr += mykey.final("utf8");
+
+                this.setState({userCode: mystr, sendingUserCode: false})
             }
         }
 

@@ -2,6 +2,8 @@ import React from "react";
 import "../styles/button.css";
 import {NavLink as Link} from "react-router-dom";
 import styled from "styled-components";
+import crypto from "crypto";
+
 
 export const NavBtn = styled.nav`
   display: flex;
@@ -45,8 +47,27 @@ export default class Button extends React.Component {
     };
 
     async componentDidMount() {
-        if (localStorage.getItem("user")) {
-            this.setState({loggedIn: true});
+        try {
+            if (localStorage.getItem("user")) {
+                this.setState({loggedIn: true});
+
+                var mykey = crypto.createDecipher(
+                    "aes-128-cbc",
+                    process.env.REACT_APP_API_TOKEN
+                );
+                var mystr = mykey.update(localStorage.getItem("user"), "hex", "utf8");
+                mystr += mykey.final("utf8");
+
+                let info = JSON.parse(mystr);
+                let tag = "";
+                if (info.username) {
+                    tag = info.username;
+                    this.setState({loggedIn: true});
+                }
+            }
+        } catch (e) {
+            console.log(e);
+            localStorage.removeItem("user");
         }
     }
 

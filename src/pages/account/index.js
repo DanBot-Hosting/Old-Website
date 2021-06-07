@@ -9,6 +9,7 @@ import Loading from "../../images/loading.svg";
 import Error from "../error";
 import {Link} from "react-router-dom";
 import AccountSidebar from "../../components/account-sidebar";
+import crypto from "crypto";
 
 const HomePage = styled.div`
   box-shadow: 0 1px 8px 0 rgba(0, 0, 0, 0.2), 0 3px 4px 0 rgba(0, 0, 0, 0.14), 0 3px 3px -2px rgba(0, 0, 0, 0.12);
@@ -217,28 +218,47 @@ class Account_Index extends Component {
 
     async componentDidMount() {
         this.fetchUserServers = this.fetchUserServers.bind(this);
-        let user = localStorage.getItem("user");
-        if (user === "n/a") return (window.location.href = api.getOauth());
-        if (!user) return (window.location.href = api.getOauth());
-
-        user = JSON.parse(user);
-
-        this.setState({user: user});
 
         try {
 
-            let userInfo = await api.fetchUser(user.id);
-            console.log(userInfo)
-            if (userInfo.error) {
-                if (userInfo.message === "User not found") {
-                    this.setState({fetchingUserInfo: false, userInfo: null});
-                } else {
-                    this.setState({fetchingUserInfo: false, error: true});
-                }
-            }
+            if (localStorage.getItem("user")) {
+                this.setState({loggedIn: true});
 
-            if (userInfo.data) {
-                this.setState({fetchingUserInfo: false, userInfo: userInfo.data});
+                var mykey = crypto.createDecipher(
+                    "aes-128-cbc",
+                    process.env.REACT_APP_API_TOKEN
+                );
+                var mystr = mykey.update(localStorage.getItem("user"), "hex", "utf8");
+                mystr += mykey.final("utf8");
+
+                let user = JSON.parse(mystr);
+                user = user.user;
+                if (user.username) {
+
+                    if (user === "n/a") return (window.location.href = api.getOauth());
+                    if (!user) return (window.location.href = api.getOauth());
+
+
+                    this.setState({user: user});
+                }
+
+
+                let userInfo = await api.fetchUser(user.id);
+                console.log(userInfo)
+                if (userInfo.error) {
+                    if (userInfo.message === "User not found") {
+                        this.setState({fetchingUserInfo: false, userInfo: null});
+                    } else {
+                        this.setState({fetchingUserInfo: false, error: true});
+                    }
+                }
+
+                if (userInfo.data) {
+                    this.setState({fetchingUserInfo: false, userInfo: userInfo.data});
+                }
+            } else {
+
+                localStorage.removeItem("user");
             }
         } catch (e) {
             console.log(e)
@@ -251,9 +271,18 @@ class Account_Index extends Component {
 
     fetchUserServers() {
         (async () => {
-            let user = localStorage.getItem("user");
-            user = JSON.parse(user);
+
             try {
+
+                var mykey = crypto.createDecipher(
+                    "aes-128-cbc",
+                    process.env.REACT_APP_API_TOKEN
+                );
+                var mystr = mykey.update(localStorage.getItem("user"), "hex", "utf8");
+                mystr += mykey.final("utf8");
+
+                let user = JSON.parse(mystr);
+                user = user.user;
                 let userServers = await api.fetchUserServers(user.id);
                 console.log(userServers)
 
@@ -268,7 +297,9 @@ class Account_Index extends Component {
                 }
 
             } catch (e) {
+
                 console.log(e);
+                localStorage.removeItem("user");
                 this.setState({fetchingUserServers: false, error: true});
             }
         })()
