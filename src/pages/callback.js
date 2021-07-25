@@ -3,9 +3,10 @@ import Navbar from "../components/nav";
 import Footer from "../components/footer";
 import Helmet from "react-helmet";
 import styled from "styled-components";
-import * as api from "../util/api";
+import * as api from "../api";
 import {Link} from "react-router-dom";
 import crypto from "crypto";
+import { Redirect } from "react-router-dom";
 
 const HomePage = styled.div`
   display: flex;
@@ -58,7 +59,6 @@ class Home extends Component {
     };
 
     async componentDidMount() {
-        const {to} = this.state;
         const url = new URLSearchParams(window.location.search);
         const code = url.get("code");
         if (!code) return window.location.href = "/";
@@ -67,55 +67,22 @@ class Home extends Component {
             this.setState({msg: "Please wait while we gather your details"});
         }
 
-        if (localStorage.getItem("user")) {
-            window.location.href = to;
-        }
+        const response = await api.logIn(code);
 
-        this.fetch()
+        if (response.error) {
+            this.setState({error: true, msg: 'Sorry, something went wrong while logging you in!'});
+        };
 
-        setInterval(async () => {
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('user', response.username);
 
-            if (localStorage.getItem("user")) {
-                this.setState({redirect: true, msg: "Successfully logged in!"});
-            } else {
-                this.fetch()
-            }
+        this.setState({ done: true });
+    };
 
-        }, 2500);
-
-    }
-
-    async fetch() {
-        const url = new URLSearchParams(window.location.search);
-        const code = url.get("code");
-        if (!code) return window.location.href = "/";
-
-        try {
-            let info = await api.user(code);
-            console.log(info);
-            if (info.error) {
-                this.setState({msg: "An error Occurred", error: true});
-            } else {
-
-                var mykey = crypto.createCipher('aes-128-cbc', process.env.REACT_APP_API_TOKEN);
-                var mystr = mykey.update(JSON.stringify(info), 'utf8', 'hex')
-                mystr += mykey.final('hex');
-
-                localStorage.setItem("user", mystr);
-
-
-                window.location.href = "/account";
-                this.setState({msg: "Redirecting", error: false});
-            }
-        } catch (e) {
-            console.log(e)
-            this.setState({msg: "An error Occurred", error: true});
-        }
-
-    }
 
     render() {
         const {msg, error} = this.state;
+        if (this.state.done) return <Redirect to='/' />;
 
         return (
             <div>

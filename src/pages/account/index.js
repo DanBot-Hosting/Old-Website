@@ -7,9 +7,8 @@ import * as api from "../../util/api";
 import LoadingIMG from "../../images/logo.png";
 import Loading from "../../images/loading.svg";
 import Error from "../error";
-import {Link} from "react-router-dom";
 import AccountSidebar from "../../components/account-sidebar";
-import crypto from "crypto";
+import { Link } from "react-router-dom";
 
 const HomePage = styled.div`
   box-shadow: 0 1px 8px 0 rgba(0, 0, 0, 0.2), 0 3px 4px 0 rgba(0, 0, 0, 0.14), 0 3px 3px -2px rgba(0, 0, 0, 0.12);
@@ -219,71 +218,29 @@ class Account_Index extends Component {
     async componentDidMount() {
         this.fetchUserServers = this.fetchUserServers.bind(this);
 
-        try {
+                this.setState({user: localStorage.getItem("user")});
 
-            if (localStorage.getItem("user")) {
-                this.setState({loggedIn: true});
-
-                var mykey = crypto.createDecipher(
-                    "aes-128-cbc",
-                    process.env.REACT_APP_API_TOKEN
-                );
-                var mystr = mykey.update(localStorage.getItem("user"), "hex", "utf8");
-                mystr += mykey.final("utf8");
-
-                let user = JSON.parse(mystr);
-                user = user.user;
-                if (user.username) {
-
-                    if (user === "n/a") return (window.location.href = api.getOauth());
-                    if (!user) return (window.location.href = api.getOauth());
-
-
-                    this.setState({user: user});
-                }
-
-
-                let userInfo = await api.fetchUser(user.id);
+                let userInfo = await api.fetchUser();
                 console.log(userInfo)
-                if (userInfo.error) {
-                    if (userInfo.message === "User not found") {
-                        this.setState({fetchingUserInfo: false, userInfo: null});
-                    } else {
-                        this.setState({fetchingUserInfo: false, error: true});
-                    }
-                }
+                // if (userInfo.error) {
+                //     if (userInfo.message === "User not found") {
+                //         this.setState({fetchingUserInfo: false, userInfo: null});
+                //     } else {
+                //         this.setState({fetchingUserInfo: false, error: true});
+                //     }
+                // }
 
-                if (userInfo.data) {
-                    this.setState({fetchingUserInfo: false, userInfo: userInfo.data});
-                }
-            } else {
+                // if (userInfo.data) {
+                //     this.setState({fetchingUserInfo: false, userInfo: userInfo.data});
+                // }
 
-                localStorage.removeItem("user");
-            }
-        } catch (e) {
-            console.log(e)
-            this.setState({fetchingUserInfo: false, error: true});
-        }
-
-        this.fetchUserServers()
+        // this.fetchUserServers()
 
     }
 
-    fetchUserServers() {
-        (async () => {
-
-            try {
-
-                var mykey = crypto.createDecipher(
-                    "aes-128-cbc",
-                    process.env.REACT_APP_API_TOKEN
-                );
-                var mystr = mykey.update(localStorage.getItem("user"), "hex", "utf8");
-                mystr += mykey.final("utf8");
-
-                let user = JSON.parse(mystr);
-                user = user.user;
-                let userServers = await api.fetchUserServers(user.id);
+    async fetchUserServers() {
+       
+                let userServers = await api.fetchUserServers();
                 console.log(userServers)
 
                 if (userServers.error) {
@@ -295,30 +252,13 @@ class Account_Index extends Component {
                         this.setState({fetchingUserServers: false, error: true});
                     }
                 }
-
-            } catch (e) {
-
-                console.log(e);
-                localStorage.removeItem("user");
-                this.setState({fetchingUserServers: false, error: true});
-            }
-        })()
     }
 
     render() {
         const {user, fetchingUserInfo, error, userInfo, fetchingUserServers, userServers} = this.state;
 
-        let tag = "User#0000";
-        let avatar = LoadingIMG;
-        let username = "User";
-        let discriminator = "#0000"
-
-        if (user) {
-            tag = user.username + "#" + user.discriminator;
-            avatar = "https://cdn.discordapp.com/avatars/" + user.id + "/" + user.avatar;
-            username = user.username;
-            discriminator = user.discriminator;
-        }
+        let tag = localStorage.getItem('user');
+        const avatar = "https://cdn.danbot.host/logo.webp";
 
         let defStyle = {
             "float": "right",
@@ -353,19 +293,9 @@ class Account_Index extends Component {
                             </center>
                         </div>
 
-                        <a
-                            href="#/"
-                            className="btn user-profile logout"
-                            onClick={e => {
-                                e.preventDefault();
-                                localStorage.removeItem("user");
-                                localStorage.removeItem("code");
-                                window.location.href = "/?success=logged_out";
-                            }}
-                        >
-                            {" "}
-                            Logout{" "}
-                        </a>
+                        <Link to="/ticket" className="btn user-profile logout">
+                            Tickets
+                        </Link>
 
                     </Intro>
 

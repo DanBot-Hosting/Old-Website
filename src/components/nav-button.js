@@ -47,28 +47,10 @@ export default class Button extends React.Component {
     };
 
     async componentDidMount() {
-        try {
             if (localStorage.getItem("user")) {
-                this.setState({loggedIn: true});
-
-                var mykey = crypto.createDecipher(
-                    "aes-128-cbc",
-                    process.env.REACT_APP_API_TOKEN
-                );
-                var mystr = mykey.update(localStorage.getItem("user"), "hex", "utf8");
-                mystr += mykey.final("utf8");
-
-                let info = JSON.parse(mystr);
-                let tag = "";
-                if (info.username) {
-                    tag = info.username;
                     this.setState({loggedIn: true});
-                }
-            }
-        } catch (e) {
-            console.log(e);
-            localStorage.removeItem("user");
-        }
+            };
+
     }
 
     render() {
@@ -87,7 +69,7 @@ export default class Button extends React.Component {
                 <a href={"/login"}>
                     <button className="btn">
                         {" "}
-                        <i class="fab fa-discord"></i> Login
+                        Login
                     </button>
                 </a>
             );

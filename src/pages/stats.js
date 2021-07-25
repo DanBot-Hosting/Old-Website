@@ -129,6 +129,7 @@ class Stats extends Component {
     async componentDidMount() {
         this.fetchStatList()
     }
+        
 
     fetchStatList = async () => {
         try {
@@ -137,17 +138,22 @@ class Stats extends Component {
             if (statRes.error) {
                 this.setState({error: true, loading: false});
             } else {
-                let data = [];
-                Object.keys(statRes.data).map(function (key, index) {
-                    if (statRes.data[key]) {
-                        statRes.data[key].online = statRes.status[key].status
-                        statRes.data[key].vm = statRes.status[key].is_vm_online
-                        data.push(statRes.data[key])
-                    }
-                });
+                Object.keys(statRes).forEach((key) => {
+                    if (statRes.data[key]){
 
-                this.setState({stats: data, loading: false});
-            }
+                        let data = [];
+                        Object.keys(statRes.data).map(function (key, index) {
+                            if (statRes.data[key]) {
+                                statRes.data[key].online = statRes.status[key].status
+                                statRes.data[key].vm = statRes.status[key].is_vm_online
+                                data.push(statRes.data[key])
+                            }
+                        });
+
+                        this.setState({stats: data, loading: false});
+                }
+            });
+        }
         } catch (e) {
             console.log(e)
             this.setState({error: true, loading: false});
